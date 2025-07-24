@@ -45,38 +45,38 @@ export default {
     res.send({
       success: true,
       data: {
-        name: 'Serati Ma',
+        name: 'One Star',
         avatar:
-          'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+          'https://api.dicebear.com/7.x/miniavs/svg?seed=3',
         userid: '00000001',
-        email: 'antdesign@alipay.com',
-        signature: '海纳百川，有容乃大',
-        title: '交互专家',
-        group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
+        email: '',
+        signature: '',
+        title: '',
+        group: '',
         tags: [
           {
             key: '0',
-            label: '很有想法的',
+            label: '0',
           },
           {
             key: '1',
-            label: '专注设计',
+            label: '1',
           },
           {
             key: '2',
-            label: '辣~',
+            label: '2',
           },
           {
             key: '3',
-            label: '大长腿',
+            label: '3',
           },
           {
             key: '4',
-            label: '川妹子',
+            label: '4',
           },
           {
             key: '5',
-            label: '海纳百川',
+            label: '5',
           },
         ],
         notifyCount: 12,

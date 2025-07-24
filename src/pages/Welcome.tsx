@@ -106,8 +106,8 @@ const Welcome: React.FC = () => {
             backgroundPosition: '100% -30%',
             backgroundRepeat: 'no-repeat',
             backgroundSize: '274px auto',
-            backgroundImage:
-              "url('https://gw.alipayobjects.com/mdn/rms_a9745b/afts/img/A*BuFmQqsB2iAAAAAAAAAAAAAAARQnAQ')",
+            // backgroundImage:
+            //   "url('https://gw.alipayobjects.com/mdn/rms_a9745b/afts/img/A*BuFmQqsB2iAAAAAAAAAAAAAAARQnAQ')",
           }}
         >
           <div
@@ -116,7 +116,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用 Ant Design Pro
+            欢迎使用One Star 数据开放平台
           </div>
           <p
             style={{
@@ -128,8 +128,8 @@ const Welcome: React.FC = () => {
               width: '65%',
             }}
           >
-            Ant Design Pro 是一个整合了 umi，Ant Design 和 ProComponents
-            的脚手架方案。致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。
+            One Star 数据开放平台是一款专为具身智能领域打造的数据采集、管理与标注系统，致力于为VLA模型训练提供高质量、可扩展的数据服务能力。
+            平台采用存储与业务分离架构，数据可灵活存储于公有云或私有云对象存储。在本地私有云部署环境下，平台已稳定支撑超过300TB数据的标注、导入与导出，充分验证了架构的高可扩展性与可靠性。
           </p>
           <div
             style={{
@@ -140,21 +140,21 @@ const Welcome: React.FC = () => {
           >
             <InfoCard
               index={1}
-              href="https://umijs.org/docs/introduce/introduce"
-              title="了解 umi"
-              desc="umi 是一个可扩展的企业级前端应用框架,umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。"
+              href="#"
+              title="Know-How 积累"
+              desc="我们拥有丰富的数据采集与模型训练经验，累计处理并标注了上千小时的多模态数据。团队持续将实践中的Know-How沉淀为平台标准功能，助力客户高效实现数据闭环。"
             />
             <InfoCard
               index={2}
-              title="了解 ant design"
-              href="https://ant.design"
-              desc="antd 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。"
+              title="无缝集成One Star产品"
+              href="#"
+              desc="One Star数据平台已与One Star数据采集及遥操作产品深度集成，实现数据流转无缝衔接。"
             />
             <InfoCard
               index={3}
-              title="了解 Pro Components"
-              href="https://procomponents.ant.design"
-              desc="ProComponents 是一个基于 Ant Design 做了更高抽象的模板组件，以 一个组件就是一个页面为开发理念，为中后台开发带来更好的体验。"
+              title="数据安全保障"
+              href="#"
+              desc="我们深知客户对数据安全与合规的重视，平台支持多重安全机制，包括私有化离线部署、IP白名单、访问与操作日志等，全方位保障您的数据安全与合规。"
             />
           </div>
         </div>

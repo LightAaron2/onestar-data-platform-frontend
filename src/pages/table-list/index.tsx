@@ -53,6 +53,7 @@ const TableList: React.FC = () => {
         />
       ),
       dataIndex: 'name',
+      hideInSearch: true,
       render: (dom, entity) => {
         return (
           <a
@@ -75,6 +76,7 @@ const TableList: React.FC = () => {
       ),
       dataIndex: 'desc',
       valueType: 'textarea',
+      hideInSearch: true,
     },
     {
       title: (
@@ -85,7 +87,7 @@ const TableList: React.FC = () => {
       ),
       dataIndex: 'callNo',
       sorter: true,
-      hideInForm: true,
+      hideInSearch: true,
       renderText: (val: string) =>
         `${val}${intl.formatMessage({
           id: 'pages.searchTable.tenThousand',
@@ -100,7 +102,7 @@ const TableList: React.FC = () => {
         />
       ),
       dataIndex: 'status',
-      hideInForm: true,
+      hideInSearch: true,
       valueEnum: {
         0: {
           text: (
@@ -148,6 +150,7 @@ const TableList: React.FC = () => {
         />
       ),
       sorter: true,
+      hideInSearch: true,
       dataIndex: 'updatedAt',
       valueType: 'dateTime',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
@@ -179,20 +182,26 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <UpdateForm
-          trigger={
-            <a>
-              <FormattedMessage
-                id="pages.searchTable.config"
-                defaultMessage="Configuration"
-              />
-            </a>
-          }
-          key="config"
-          onOk={actionRef.current?.reload}
-          values={record}
-        />,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
+        // <UpdateForm
+        //   trigger={
+        //     <a>
+        //       <FormattedMessage
+        //         id="pages.searchTable.config"
+        //         defaultMessage="Configuration"
+        //       />
+        //     </a>
+        //   }
+        //   key="config"
+        //   onOk={actionRef.current?.reload}
+        //   values={record}
+        // />,
+        <a>
+        <FormattedMessage
+          id="pages.searchTable.config"
+          defaultMessage="Configuration"
+        />
+        </a>,
+        <a key="subscribeAlert" href="#">
           <FormattedMessage
             id="pages.searchTable.subscribeAlert"
             defaultMessage="Subscribe to alerts"
@@ -238,9 +247,9 @@ const TableList: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
-        toolBarRender={() => [
-          <CreateForm key="create" reload={actionRef.current?.reload} />,
-        ]}
+        // toolBarRender={() => [
+        //   <CreateForm key="create" reload={actionRef.current?.reload} />,
+        // ]}
         request={rule}
         columns={columns}
         rowSelection={{

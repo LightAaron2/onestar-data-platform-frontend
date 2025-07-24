@@ -59,7 +59,7 @@ export default {
   'pages.searchTable.exception': '请输入异常原因！',
   'pages.searchTable.titleOption': '操作',
   'pages.searchTable.config': '配置',
-  'pages.searchTable.subscribeAlert': '订阅警报',
+  'pages.searchTable.subscribeAlert': '上传',
   'pages.searchTable.title': '查询表格',
   'pages.searchTable.new': '新建',
   'pages.searchTable.chosen': '已选择',

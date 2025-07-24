@@ -1,9 +1,9 @@
 {
-  "name": "ant-design-pro",
+  "name": "one-star-data-platform",
   "version": "6.0.0",
   "private": true,
-  "description": "An out-of-box UI solution for enterprise applications",
-  "repository": "git@github.com:ant-design/ant-design-pro.git",
+  "description": "",
+  "repository": "",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 max build",
     "biome:lint": "npx @biomejs/biome lint",
