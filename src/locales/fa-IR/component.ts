@@ -1,5 +1,5 @@
 export default {
-  'component.tagSelect.expand': 'باز',
-  'component.tagSelect.collapse': 'بسته ',
-  'component.tagSelect.all': 'همه',
+  'component.tagSelect.expand': 'Expand',
+  'component.tagSelect.collapse': 'Collapse',
+  'component.tagSelect.all': 'All',
 };

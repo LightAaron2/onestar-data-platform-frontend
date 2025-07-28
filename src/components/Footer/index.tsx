@@ -4,12 +4,13 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <DefaultFooter
-      style={{
-        background: 'none',
-      }}
-      copyright="Powered by Aaron & Raymond"
-    />
+    // <DefaultFooter
+    //   style={{
+    //     background: 'none',
+    //   }}
+    //   copyright=""
+    // />
+    null
   );
 };
 

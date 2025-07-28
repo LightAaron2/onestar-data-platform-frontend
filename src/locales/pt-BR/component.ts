@@ -1,5 +1,5 @@
 export default {
-  'component.tagSelect.expand': 'Expandir',
-  'component.tagSelect.collapse': 'Diminuir',
-  'component.tagSelect.all': 'Todas',
+  'component.tagSelect.expand': 'Expand',
+  'component.tagSelect.collapse': 'Collapse',
+  'component.tagSelect.all': 'All',
 };

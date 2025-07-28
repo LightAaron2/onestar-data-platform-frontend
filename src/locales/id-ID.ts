@@ -7,14 +7,14 @@ import settingDrawer from './id-ID/settingDrawer';
 import settings from './id-ID/settings';
 
 export default {
-  'navbar.lang': 'Bahasa',
-  'layout.user.link.help': 'Bantuan',
-  'layout.user.link.privacy': 'Privasi',
-  'layout.user.link.terms': 'Ketentuan',
-  'app.preview.down.block': 'Unduh halaman ini dalam projek lokal anda',
-  'app.welcome.link.fetch-blocks': 'Dapatkan semua blok',
+  'navBar.lang': 'Languages',
+  'layout.user.link.help': 'Help',
+  'layout.user.link.privacy': 'Privacy',
+  'layout.user.link.terms': 'Terms',
+  'app.preview.down.block': 'Download this page to your local project',
+  'app.welcome.link.fetch-blocks': 'Get all block',
   'app.welcome.link.block-list':
-    'Buat standar dengan cepat, halaman-halaman berdasarkan pengembangan `block`',
+    'Quickly build standard, pages based on `block` development',
   ...globalHeader,
   ...menu,
   ...settingDrawer,

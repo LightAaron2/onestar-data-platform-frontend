@@ -1,7 +1,7 @@
 export default {
-  'app.pwa.offline': 'あなたは今オフラインです',
-  'app.pwa.serviceworker.updated': '新しいコンテンツが利用可能です',
+  'app.pwa.offline': 'You are offline now',
+  'app.pwa.serviceworker.updated': 'New content is available',
   'app.pwa.serviceworker.updated.hint':
-    '現在のページをリロードするには、「更新」ボタンを押してください',
-  'app.pwa.serviceworker.updated.ok': 'リフレッシュ',
+    'Please press the "Refresh" button to reload current page',
+  'app.pwa.serviceworker.updated.ok': 'Refresh',
 };
