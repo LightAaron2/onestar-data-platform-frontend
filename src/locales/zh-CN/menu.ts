@@ -1,5 +1,5 @@
 export default {
-  'menu.welcome': '主页欢迎',
+  'menu.welcome': '主页板块',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',

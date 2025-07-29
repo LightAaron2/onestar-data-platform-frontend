@@ -25,7 +25,7 @@ export default [
   {
     path: '/welcome',
     name: 'welcome',
-    icon: 'smile',
+    icon: 'crown',
     component: './Welcome',
   },
   // {
@@ -58,6 +58,6 @@ export default [
   {
     component: '404',
     layout: false,
-    path: './*',
+    path: '/404',
   },
 ];

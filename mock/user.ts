@@ -45,9 +45,9 @@ export default {
     res.send({
       success: true,
       data: {
-        name: 'One Star',
+        name: 'Gong Zezhen',
         avatar:
-          'https://api.dicebear.com/7.x/miniavs/svg?seed=3',
+          'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
         userid: '00000001',
         email: '',
         signature: '',
@@ -85,16 +85,16 @@ export default {
         access: getAccess(),
         geographic: {
           province: {
-            label: '浙江省',
-            key: '330000',
+            label: '',
+            key: '',
           },
           city: {
-            label: '杭州市',
-            key: '330100',
+            label: '',
+            key: '',
           },
         },
-        address: '西湖区工专路 77 号',
-        phone: '0752-268888888',
+        address: '',
+        phone: '',
       },
     });
   },
@@ -122,7 +122,7 @@ export default {
   'POST /api/login/account': async (req: Request, res: Response) => {
     const { password, username, type } = req.body;
     await waitTime(2000);
-    if (password === '1231234' && username === 'admin') {
+    if (password === '1231234' && username === 'user') {
       res.send({
         status: 'ok',
         type,
@@ -131,7 +131,7 @@ export default {
       access = 'admin';
       return;
     }
-    if (password === '1231234' && username === 'user') {
+    if (password === '123123' && username === 'zezhengong') {
       res.send({
         status: 'ok',
         type,
