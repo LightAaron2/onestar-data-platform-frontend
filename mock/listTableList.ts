@@ -11,10 +11,10 @@ const genList = (current: number, pageSize: number) => {
     tableListDataSource.push({
       key: index,
       disabled: i % 6 === 0,
-      href: 'https://ant.design',
+      href: '',
       avatar: [
-        'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-        'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
+        '',
+        '',
       ][i % 2],
       name: `TradeCode ${index}`,
       owner: '',
@@ -137,8 +137,8 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
           key: tableListDataSource.length,
           href: 'https://ant.design',
           avatar: [
-            'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-            'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
+            '',
+            '',
           ][i % 2],
           name,
           owner: '',
