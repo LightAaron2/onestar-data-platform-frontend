@@ -2,7 +2,9 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { Card, theme } from 'antd';
 import React from 'react';
-
+import { GridContent } from '@ant-design/pro-components';
+import IntroduceRow from './dashboard/components/IntroduceRow';
+import dayjs from 'dayjs';
 /**
  * 每个单独的卡片，为了复用样式抽成了组件
  * @param param0
@@ -82,12 +84,27 @@ const InfoCard: React.FC<{
     </div>
   );
 };
+export interface DataItem {
+  [field: string]: string | number | number[] | null | undefined;
+}
+const visitData: DataItem[] = [];
+const beginDay = Date.now();
+const fakeY = [7, 5, 4, 2, 4, 7, 5, 6, 5, 9, 6, 3, 1, 5, 3, 6, 5];
+for (let i = 0; i < fakeY.length; i += 1) {
+  visitData.push({
+    x: dayjs(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
+    y: fakeY[i],
+  });
+}
 
 const Welcome: React.FC = () => {
   const { token } = theme.useToken();
   const { initialState } = useModel('@@initialState');
   return (
     <PageContainer>
+      <GridContent>
+        <IntroduceRow loading={false} visitData={visitData || []} />
+      </GridContent>
       <Card
         style={{
           borderRadius: 8,

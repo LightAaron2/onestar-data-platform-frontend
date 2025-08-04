@@ -52,6 +52,12 @@ export default [
     component: './table-list',
   },
   {
+    name: 'list.card-list',
+    icon: 'profile',
+    path: '/card-list',
+    component: './data-card-list',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
