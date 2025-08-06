@@ -45,7 +45,7 @@ export default {
     res.send({
       success: true,
       data: {
-        name: 'Gong Zezhen',
+        name: 'Admin',
         avatar:
           'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
         userid: '00000001',
@@ -132,6 +132,15 @@ export default {
       return;
     }
     if (password === '123123' && username === 'zezhengong') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'user',
+      });
+      access = 'user';
+      return;
+    }
+    if (password === '123123' && username === 'admin') {
       res.send({
         status: 'ok',
         type,

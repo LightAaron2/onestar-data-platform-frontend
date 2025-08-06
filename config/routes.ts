@@ -58,6 +58,12 @@ export default [
     component: './data-card-list',
   },
   {
+    name: 'slam-data-moniter',
+    icon: 'robot',
+    path: '/slam-data-moniter',
+    component: './slam-data-moniter',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
