@@ -112,18 +112,6 @@ const SlamDataMoniter: FC = () => {
       key: 'name',
       align: 'left'
     },
-    // {
-    //   title: '商品名称',
-    //   dataIndex: 'name',
-    //   key: 'name',
-    //   render: renderContent,
-    // },
-    // {
-    //   title: '商品条码',
-    //   dataIndex: 'barcode',
-    //   key: 'barcode',
-    //   render: renderContent,
-    // },
     {
       title: '数值',
       dataIndex: 'price',
@@ -131,46 +119,6 @@ const SlamDataMoniter: FC = () => {
       align: 'left' as 'left' | 'right' | 'center',
       render: renderContent,
     },
-    // {
-    //   title: '数量（件）',
-    //   dataIndex: 'num',
-    //   key: 'num',
-    //   align: 'right' as 'left' | 'right' | 'center',
-    //   render: (text: React.ReactNode, _: any, index: number) => {
-    //     if (index < basicGoods.length) {
-    //       return text;
-    //     }
-    //     return (
-    //       <span
-    //         style={{
-    //           fontWeight: 600,
-    //         }}
-    //       >
-    //         {text}
-    //       </span>
-    //     );
-    //   },
-    // },
-    // {
-    //   title: '金额',
-    //   dataIndex: 'amount',
-    //   key: 'amount',
-    //   align: 'right' as 'left' | 'right' | 'center',
-    //   render: (text: React.ReactNode, _: any, index: number) => {
-    //     if (index < basicGoods.length) {
-    //       return text;
-    //     }
-    //     return (
-    //       <span
-    //         style={{
-    //           fontWeight: 600,
-    //         }}
-    //       >
-    //         {text}
-    //       </span>
-    //     );
-    //   },
-    // },
   ];
   return (
     <PageContainer>
@@ -238,20 +186,6 @@ const SlamDataMoniter: FC = () => {
             marginBottom: 32,
           }}
         />
-        {/* <Descriptions
-          title="用户信息"
-          style={{
-            marginBottom: 32,
-          }}
-        >
-          <Descriptions.Item label="用户姓名">付小小</Descriptions.Item>
-          <Descriptions.Item label="联系电话">18100000000</Descriptions.Item>
-          <Descriptions.Item label="常用快递">菜鸟仓储</Descriptions.Item>
-          <Descriptions.Item label="取货地址">
-            浙江省杭州市西湖区万塘路18号
-          </Descriptions.Item>
-          <Descriptions.Item label="备注">无</Descriptions.Item>
-        </Descriptions> */}
         <Divider
           style={{
             marginBottom: 32,
