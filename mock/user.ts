@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
-
+import { url } from 'inspector';
+// import avatarUrl from '@/../public/avatar.jpg';
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -46,8 +47,8 @@ export default {
       success: true,
       data: {
         name: 'Admin',
-        avatar:
-          'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        avatar: '/avatar.jpg',
+          // '',
         userid: '00000001',
         email: '',
         signature: '',
@@ -140,7 +141,7 @@ export default {
       access = 'user';
       return;
     }
-    if (password === '123123' && username === 'admin') {
+    if (password === '123123' && username === 'Admin') {
       res.send({
         status: 'ok',
         type,
