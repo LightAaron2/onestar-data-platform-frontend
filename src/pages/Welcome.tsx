@@ -165,7 +165,7 @@ const Welcome: React.FC = () => {
               index={2}
               title="无缝集成OneStar产品"
               href="#"
-              desc="One Star数据平台已与OneStar数据采集及遥操作产品深度集成，实现数据流转无缝衔接。"
+              desc="OneStar智能数据标注系统已与OneStar数据采集及遥操作产品深度集成，实现数据流转无缝衔接。"
             />
             <InfoCard
               index={3}

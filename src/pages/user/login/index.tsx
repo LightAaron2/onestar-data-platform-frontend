@@ -183,7 +183,7 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           // logo={<img alt="logo" src="/logo.svg" />}
-          title="One Star 数据开发平台"
+          title="OneStar智能数据标注系统"
           subTitle={intl.formatMessage({
             id: 'pages.layouts.userLayout.title',
           })}
