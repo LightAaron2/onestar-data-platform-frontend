@@ -29,7 +29,7 @@ const Admin: React.FC = () => {
           }}
         />
         <Typography.Title level={2} style={{ textAlign: 'center' }}>
-          <SmileTwoTone /> One Star{' '}
+          <SmileTwoTone /> OneStar{' '}
           <HeartTwoTone twoToneColor="#eb2f96" /> You
         </Typography.Title>
       </Card>

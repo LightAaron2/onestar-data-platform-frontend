@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'One Star 数据开发平台',
+  title: 'OneStar智能数据标注系统',
   pwa: true,
   logo: false,
   iconfontUrl: '',

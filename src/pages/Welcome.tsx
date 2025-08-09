@@ -133,7 +133,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用One Star 数据开放平台
+            欢迎使用OneStar智能数据标注系统
           </div>
           <p
             style={{
@@ -145,7 +145,7 @@ const Welcome: React.FC = () => {
               width: '65%',
             }}
           >
-            One Star 数据开放平台是一款专为具身智能领域打造的数据采集、管理与标注系统，致力于为VLA模型训练提供高质量、可扩展的数据服务能力。
+            OneStar智能数据标注系统是一款专为具身智能领域打造的数据采集、管理与标注系统，致力于为VLA模型训练提供高质量、可扩展的数据服务能力。
             平台采用存储与业务分离架构，数据可灵活存储于公有云或私有云对象存储。在本地私有云部署环境下，平台已稳定支撑超过300TB数据的标注、导入与导出，充分验证了架构的高可扩展性与可靠性。
           </p>
           <div
@@ -163,9 +163,9 @@ const Welcome: React.FC = () => {
             />
             <InfoCard
               index={2}
-              title="无缝集成One Star产品"
+              title="无缝集成OneStar产品"
               href="#"
-              desc="One Star数据平台已与One Star数据采集及遥操作产品深度集成，实现数据流转无缝衔接。"
+              desc="One Star数据平台已与OneStar数据采集及遥操作产品深度集成，实现数据流转无缝衔接。"
             />
             <InfoCard
               index={3}

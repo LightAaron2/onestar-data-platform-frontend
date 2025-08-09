@@ -51,12 +51,12 @@ export default [
     path: '/list',
     component: './table-list',
   },
-  {
-    name: 'list.card-list',
-    icon: 'profile',
-    path: '/card-list',
-    component: './data-card-list',
-  },
+  // {
+  //   name: 'list.card-list',
+  //   icon: 'profile',
+  //   path: '/card-list',
+  //   component: './data-card-list',
+  // },
   {
     name: 'slam-data-moniter',
     icon: 'robot',

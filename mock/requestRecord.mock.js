@@ -1,7 +1,7 @@
 module.exports = {
   'GET /api/currentUser': {
     data: {
-      name: 'One Star',
+      name: 'OneStar',
       avatar:
         'https://api.dicebear.com/7.x/miniavs/svg?seed=3',
       userid: '00000001',
