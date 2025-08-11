@@ -1,8 +1,17 @@
+export type XyzData = {
+  id: string;
+  name?: string;
+  value?: string;
+  time?: string;
+  num?: string | number;
+  amount?: string | number;
+};
+
 export type BasicGood = {
   id: string;
   name?: string;
-  barcode?: string;
-  price?: string;
+  value?: string;
+  time?: string;
   num?: string | number;
   amount?: string | number;
 };
@@ -15,3 +24,7 @@ export type BasicProgress = {
   operator: string;
   cost: string;
 };
+
+export type SlamDatas = {
+  data: object
+}

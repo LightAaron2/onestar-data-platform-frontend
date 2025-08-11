@@ -11,16 +11,62 @@
  */
 export default {
   // 如果需要自定义本地开发服务器  请取消注释按需调整
-  // dev: {
-  //   // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
-  //   '/api/': {
-  //     // 要代理的地址
-  //     target: 'https://preview.pro.ant.design',
-  //     // 配置了这个可以从 http 代理到 https
-  //     // 依赖 origin 的功能可能需要这个，比如 cookie
-  //     changeOrigin: true,
-  //   },
-  // },
+  test_dev: {
+    // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
+    // '/api/': {
+    //   // 要代理的地址
+    //   target: 'http://localhost:8888',
+    //   // 配置了这个可以从 http 代理到 https
+    //   // 依赖 origin 的功能可能需要这个，比如 cookie
+    //   changeOrigin: true,
+    //   // pathRewrite: { '^/api': '' }, // 去掉 /api 前缀
+    // },
+    // 走 REST 接口
+    '/test/': {
+      target: 'http://127.0.0.1:8888/api/',
+      changeOrigin: true,
+      // 后端没有 /api 前缀就去掉
+      pathRewrite: { '^/test/api': '' },
+    },
+    // 走 WebSocket（如果需要）
+    '/ws': {
+      target: 'ws://127.0.0.1:8000',
+      ws: true,
+      changeOrigin: true,
+      // 由于代理，前端始终连 ws://127.0.0.1:8001/ws/echo
+        // const ws = new WebSocket('ws://127.0.0.1:8001/ws/echo');
+        // ws.onopen = () => ws.send('hello');
+        // ws.onmessage = (e) => console.log('recv:', e.data);
+    },
+  },
+  dev: {
+    // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
+    // '/api/': {
+    //   // 要代理的地址
+    //   target: 'http://localhost:8888',
+    //   // 配置了这个可以从 http 代理到 https
+    //   // 依赖 origin 的功能可能需要这个，比如 cookie
+    //   changeOrigin: true,
+    //   // pathRewrite: { '^/api': '' }, // 去掉 /api 前缀
+    // },
+    // 走 REST 接口
+    '/api/': {
+      target: 'http://127.0.0.1:8888/api/',
+      changeOrigin: true,
+      // 后端没有 /api 前缀就去掉
+      pathRewrite: { '^/api': '' },
+    },
+    // 走 WebSocket（如果需要）
+    '/ws': {
+      target: 'ws://127.0.0.1:8000',
+      ws: true,
+      changeOrigin: true,
+      // 由于代理，前端始终连 ws://127.0.0.1:8001/ws/echo
+        // const ws = new WebSocket('ws://127.0.0.1:8001/ws/echo');
+        // ws.onopen = () => ws.send('hello');
+        // ws.onmessage = (e) => console.log('recv:', e.data);
+    },
+  },
   /**
    * @name 详细的代理配置
    * @doc https://github.com/chimurai/http-proxy-middleware

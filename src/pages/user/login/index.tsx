@@ -26,6 +26,7 @@ import { flushSync } from 'react-dom';
 import { Footer } from '@/components';
 import { login } from '@/services/testapi/api';
 import { getFakeCaptcha } from '@/services/testapi/login';
+import { ping } from '@/services/testapi/login';
 import Settings from '../../../../config/defaultSettings';
 
 const useStyles = createStyles(({ token }) => {
@@ -131,6 +132,8 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
+    const msg = await ping();
+    console.log(msg)
     try {
       // 登录
       const msg = await login({ ...values, type });

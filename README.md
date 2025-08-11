@@ -5,7 +5,8 @@
 `npm install`
 
 ### - 运行demo
-`npm run start`
+`npm run start` --  前端开发测试环境
+`npm run start:test-dev` -- 前后端连通测试环境
 
 ### - 界面效果
 <img width="2070" height="1188" alt="Screen Shot 2025-07-27 at 5 45 05 PM" src="https://github.com/user-attachments/assets/ce9eca2d-c251-45ec-b092-5f3df176e80c" />

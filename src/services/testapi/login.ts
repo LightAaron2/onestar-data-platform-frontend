@@ -19,3 +19,13 @@ export async function getFakeCaptcha(
     ...(options || {}),
   });
 }
+
+
+export async function ping() {
+  // 实际会走 http://127.0.0.1:8000/test/api/v0/ping -> 代理到 http://127.0.0.1:8888/api/v0/ping
+  return request<{ msg: string }>('/test/api/v0/ping', {
+    method: 'GET',
+    // 如果后端用 Cookie 鉴权：
+    // credentials: 'include',
+  });
+}

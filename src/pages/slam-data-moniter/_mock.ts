@@ -5,7 +5,7 @@ const basicGoods = [
     id: '1',
     name: '坐标X',
     barcode: '坐标X',
-    price: '2.00',
+    value: '2.00',
     num: '1',
     amount: '0.075',
     time: '2017-10-01 14:10',
@@ -14,7 +14,7 @@ const basicGoods = [
     id: '2',
     name: '坐标Y',
     barcode: '坐标Y',
-    price: '-0.300',
+    value: '-0.300',
     num: '2',
     amount: '6.00',
     time: '2017-10-01 14:05',
@@ -23,7 +23,7 @@ const basicGoods = [
     id: '3',
     name: '坐标Z',
     barcode: '坐标Z',
-    price: '7.00',
+    value: '7.00',
     num: '4',
     amount: '-0.01',
     time: '2017-10-01 13:05',
@@ -84,4 +84,17 @@ function getProfileBasic(_: Request, res: Response) {
 
 export default {
   'GET  /api/profile/basic': getProfileBasic,
+  'GET  /api/v1/status': getStatus,
 };
+
+
+function getStatus(_: Request, res: Response) {
+  return res.json({
+    data: {
+      'x': 1,
+      'y': 0,
+      'z': 3
+    },
+  });
+}
+

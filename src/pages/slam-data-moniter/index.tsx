@@ -3,9 +3,9 @@ import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
 import { Badge, Card, Descriptions, Divider, Row, Col, Button } from 'antd';
 import type { FC } from 'react';
-import React from 'react';
-import type { BasicGood, BasicProgress } from './data.d';
-import { queryBasicProfile } from './service';
+import React, { useEffect, useState } from 'react';
+import type { XyzData, BasicProgress, SlamDatas } from './data.d';
+import { queryBasicProfile, getSlamData } from './service';
 import useStyles from './style.style';
 
 const progressColumns: ProColumns<BasicProgress>[] = [
@@ -61,22 +61,36 @@ const Info: FC<{
 };
 
 const SlamDataMoniter: FC = () => {
+  const [slamData, setSlamData] = useState<SlamDatas[]>([])
+
   const { styles } = useStyles();
   const { data, loading } = useRequest(() => {
     return queryBasicProfile();
   });
+  const { data: slamDatas, loading: xyzdataloding } = useRequest(() => {
+    return getSlamData();
+  });
+  // let slamData: typeof xyzData = [];
+  // if (xyzData.length) {
+  //   console.log(xyzData)
+  //   slamData = xyzData
+  // }
+  useEffect(() => {
+    console.log(slamDatas)
+    if (slamDatas !== undefined) {
+      setSlamData(slamDatas.xyzData)
+    } 
+  }, [slamDatas])
+
   const { basicGoods, basicProgress } = data || {
     basicGoods: [],
     basicProgress: [],
   };
   let goodsData: typeof basicGoods = [];
+
   if (basicGoods.length) {
     let num = 0;
     let amount = 0;
-    basicGoods.forEach((item) => {
-      num += Number(item.num);
-      amount += Number(item.amount);
-    });
     // goodsData = basicGoods.concat({
     //   id: '总计',
     //   num,
@@ -99,7 +113,8 @@ const SlamDataMoniter: FC = () => {
     }
     return obj;
   };
-  const goodsColumns: ProColumns<BasicGood>[] = [
+
+  const xyzColumns: ProColumns<XyzData>[] = [
     {
       title: '时间',
       dataIndex: 'time',
@@ -114,8 +129,8 @@ const SlamDataMoniter: FC = () => {
     },
     {
       title: '数值',
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'value',
+      key: 'value',
       align: 'left' as 'left' | 'right' | 'center',
       render: renderContent,
     },
@@ -201,8 +216,8 @@ const SlamDataMoniter: FC = () => {
           loading={loading}
           options={false}
           toolBarRender={false}
-          dataSource={goodsData}
-          columns={goodsColumns}
+          dataSource={slamData}
+          columns={xyzColumns}
           rowKey="id"
         />
         {/* <div className={styles.title}>姿态四元数</div> */}
