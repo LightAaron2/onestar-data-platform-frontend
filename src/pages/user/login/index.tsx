@@ -21,13 +21,14 @@ import {
 } from '@umijs/max';
 import { Alert, App, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { Footer } from '@/components';
 import { login } from '@/services/testapi/api';
 import { getFakeCaptcha } from '@/services/testapi/login';
 import { ping } from '@/services/testapi/login';
 import Settings from '../../../../config/defaultSettings';
+import avatarUrl from '@/../public/login_bg.png';
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -54,6 +55,7 @@ const useStyles = createStyles(({ token }) => {
       },
     },
     container: {
+      position: 'relative',
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',
@@ -130,10 +132,13 @@ const Login: React.FC = () => {
       });
     }
   };
+  
+  useEffect(() => {
+    const msg = ping();
+    console.log(msg)
+  }, [])
 
   const handleSubmit = async (values: API.LoginParams) => {
-    const msg = await ping();
-    console.log(msg)
     try {
       // 登录
       const msg = await login({ ...values, type });
@@ -174,6 +179,9 @@ const Login: React.FC = () => {
         </title>
       </Helmet>
       {/* <Lang /> */}
+      <div>
+        <img style={{position: 'absolute', right: 0, bottom: 0, maxWidth : 1024}} src={avatarUrl}></img>
+      </div>
       <div
         style={{
           flex: '1',
