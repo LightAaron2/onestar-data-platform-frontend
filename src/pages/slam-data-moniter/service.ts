@@ -1,5 +1,5 @@
 import { request } from '@umijs/max';
-import type { BasicGood, BasicProgress, SlamDatas } from './data.d';
+import type { BasicGood, BasicProgress, XyzData, Qdata } from './data.d';
 
 export async function queryBasicProfile(): Promise<{
   data: {
@@ -16,7 +16,8 @@ export async function connectBackend(): Promise<{}> {
 
 export async function getSlamData(): Promise<{
   data: {
-    xyzData: SlamDatas[];
+    xyzData: XyzData[];
+    qData: Qdata[];
   }
 }> {
   return request('/test/api/v0/data', {

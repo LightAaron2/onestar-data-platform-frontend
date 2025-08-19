@@ -7,6 +7,15 @@ export type XyzData = {
   amount?: string | number;
 };
 
+export type QData = {
+  id: string;
+  name?: string;
+  value?: string;
+  time?: string;
+  num?: string | number;
+  amount?: string | number;
+};
+
 export type BasicGood = {
   id: string;
   name?: string;

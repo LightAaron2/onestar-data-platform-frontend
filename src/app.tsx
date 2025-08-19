@@ -79,7 +79,7 @@ export const layout: RunTimeLayoutConfig = ({
     },
     waterMarkProps: {
       // content: initialState?.currentUser?.name,
-      content: 'OneStar',
+      // content: 'OneStar',
     },
     footerRender: () => <Footer />,
     onPageChange: () => {

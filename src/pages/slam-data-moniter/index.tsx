@@ -4,11 +4,18 @@ import { useRequest } from '@umijs/max';
 import { Badge, Card, Descriptions, Divider, Row, Col, Button } from 'antd';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import type { XyzData, BasicProgress, SlamDatas } from './data.d';
+import type { XyzData, QData } from './data.d';
 import { queryBasicProfile, getSlamData } from './service';
 import useStyles from './style.style';
 
-const progressColumns: ProColumns<BasicProgress>[] = [
+const progressColumns: ProColumns<QData>[] = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+    align: 'left',
+    hideInTable: true,
+  },
   {
     title: '时间',
     dataIndex: 'time',
@@ -17,8 +24,8 @@ const progressColumns: ProColumns<BasicProgress>[] = [
   },
   {
     title: '姿态四元数',
-    dataIndex: 'rate',
-    key: 'rate',
+    dataIndex: 'name',
+    key: 'name',
     align: 'left'
   },
   // {
@@ -39,8 +46,8 @@ const progressColumns: ProColumns<BasicProgress>[] = [
   // },
   {
     title: '数值',
-    dataIndex: 'cost',
-    key: 'cost',
+    dataIndex: 'value',
+    key: 'value',
     align: 'left'
   },
 ];
@@ -61,7 +68,8 @@ const Info: FC<{
 };
 
 const SlamDataMoniter: FC = () => {
-  const [slamData, setSlamData] = useState<SlamDatas[]>([])
+  const [xyzData, setXyzData] = useState<XyzData[]>([])
+  const [qData, setQData] = useState<QData[]>([])
 
   const { styles } = useStyles();
   const { data, loading } = useRequest(() => {
@@ -76,9 +84,10 @@ const SlamDataMoniter: FC = () => {
   //   slamData = xyzData
   // }
   useEffect(() => {
-    console.log(slamDatas)
+    console.log(xyzData)
     if (slamDatas !== undefined) {
-      setSlamData(slamDatas.xyzData)
+      setXyzData(slamDatas.xyzData)
+      setQData(slamDatas.qData)
     } 
   }, [slamDatas])
 
@@ -115,6 +124,13 @@ const SlamDataMoniter: FC = () => {
   };
 
   const xyzColumns: ProColumns<XyzData>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'left',
+      hideInTable: true,
+    },
     {
       title: '时间',
       dataIndex: 'time',
@@ -216,7 +232,7 @@ const SlamDataMoniter: FC = () => {
           loading={loading}
           options={false}
           toolBarRender={false}
-          dataSource={slamData}
+          dataSource={xyzData}
           columns={xyzColumns}
           rowKey="id"
         />
@@ -230,8 +246,9 @@ const SlamDataMoniter: FC = () => {
           search={false}
           options={false}
           toolBarRender={false}
-          dataSource={basicProgress}
+          dataSource={qData}
           columns={progressColumns}
+          rowKey="id"
         />
         
       </Card>
