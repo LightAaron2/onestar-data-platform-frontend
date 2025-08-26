@@ -1,0 +1,275 @@
+import type { ProColumns } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { useRequest } from '@umijs/max';
+import { Badge, Card, Descriptions, Divider, Row, Col, Button } from 'antd';
+import type { FC } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import type { XyzData, QData } from './data.d';
+import { queryBasicProfile, getSlamData } from './service';
+import useStyles from './style.style';
+
+const progressColumns: ProColumns<QData>[] = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+    align: 'left',
+    hideInTable: true,
+  },
+  {
+    title: '时间',
+    dataIndex: 'time',
+    key: 'time',
+    align: 'left'
+  },
+  {
+    title: '姿态四元数',
+    dataIndex: 'name',
+    key: 'name',
+    align: 'left'
+  },
+  // {
+  //   title: '状态',
+  //   dataIndex: 'status',
+  //   key: 'status',
+  //   render: (text: React.ReactNode) => {
+  //     if (text === 'success') {
+  //       return <Badge status="success" text="成功" />;
+  //     }
+  //     return <Badge status="processing" text="进行中" />;
+  //   },
+  // },
+  // {
+  //   title: '操作员ID',
+  //   dataIndex: 'operator',
+  //   key: 'operator',
+  // },
+  {
+    title: '数值',
+    dataIndex: 'value',
+    key: 'value',
+    align: 'left'
+  },
+];
+
+const Info: FC<{
+  title: React.ReactNode;
+  value: React.ReactNode;
+  bordered?: boolean;
+}> = ({ title, value, bordered }) => {
+  const { styles } = useStyles();
+  return (
+    <div className={styles.headerInfo}>
+      <span>{title}</span>
+      <p>{value}</p>
+      {bordered && <em />}
+    </div>
+  );
+};
+
+const SlamDataMoniter: FC = () => {
+  const [xyzData, setXyzData] = useState<XyzData[]>([])
+  const [qData, setQData] = useState<QData[]>([])
+	const [cams, setCams] = useState<{cid:number; topic:string}[]>([]);
+	const [cid, setCid]   = useState<number | null>(null);
+
+  const { styles } = useStyles();
+  const { data, loading } = useRequest(() => {
+    return queryBasicProfile();
+  });
+  const { data: slamDatas, loading: xyzdataloding } = useRequest(() => {
+    return getSlamData();
+  });
+  // let slamData: typeof xyzData = [];
+  // if (xyzData.length) {
+  //   console.log(xyzData)
+  //   slamData = xyzData
+  // }
+  useEffect(() => {
+    console.log(xyzData)
+    if (slamDatas !== undefined) {
+      setXyzData(slamDatas.xyzData)
+      setQData(slamDatas.qData)
+    } 
+  }, [slamDatas])
+
+  useEffect(() => {
+    fetch(`${'http://localhost:8888'}/api/v0/cameras`)
+      .then(r => r.json())
+      .then((list) => {
+        setCams(list);
+        if (list.length > 0) setCid(list[0].cid);
+      })
+      .catch(console.error);
+  }, []);
+
+	const imgSrc = useMemo(() => {
+    return cid === null ? '' : `${'http://localhost:8888'}/api/v0/stream/${cid}`;
+  }, [cid]);
+
+  const { basicGoods, basicProgress } = data || {
+    basicGoods: [],
+    basicProgress: [],
+  };
+  let goodsData: typeof basicGoods = [];
+
+  if (basicGoods.length) {
+    let num = 0;
+    let amount = 0;
+    // goodsData = basicGoods.concat({
+    //   id: '总计',
+    //   num,
+    //   amount,
+    // });
+    goodsData = basicGoods
+  }
+  const renderContent = (value: any, _: any, index: any) => {
+    const obj: {
+      children: any;
+      props: {
+        colSpan?: number;
+      };
+    } = {
+      children: value,
+      props: {},
+    };
+    if (index === basicGoods.length) {
+      obj.props.colSpan = 0;
+    }
+    return obj;
+  };
+
+  const xyzColumns: ProColumns<XyzData>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'left',
+      hideInTable: true,
+    },
+    {
+      title: '时间',
+      dataIndex: 'time',
+      key: 'time',
+      align: 'left'
+    },
+    {
+      title: '位置坐标',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'left'
+    },
+    {
+      title: '数值',
+      dataIndex: 'value',
+      key: 'value',
+      align: 'left' as 'left' | 'right' | 'center',
+      render: renderContent,
+    },
+  ];
+  return (
+    <PageContainer>
+      {/* <div className={styles.standardList}> */}
+      <Card>
+        <Row>
+          <Col sm={8} xs={24}>
+            <Info title="连接状态" value="未连接" bordered />
+          </Col>
+          <Col sm={8} xs={24}>
+            <Info title="机器人编号" value="0001" bordered />
+          </Col>
+          <Col sm={8} xs={24}>
+            <Info title="当前时间" value="7:45:01 PM" />
+          </Col>
+        </Row>
+      </Card>
+      <Card
+      style={{
+        marginTop: 24,
+      }}    
+      >
+        <Row>
+          <Col sm={8} xs={24} style={{textAlign: 'center'}}>
+            <Button type="primary" size="large" style={{width: 180}}>开始采集</Button>
+          </Col>
+          <Col sm={8} xs={24} style={{textAlign: 'center'}}>
+            <Button size="large" danger style={{width: 180}}>停止采集</Button>
+          </Col>
+          <Col sm={8} xs={24} style={{textAlign: 'center'}}>
+            <Button type="dashed" size="large" style={{width: 180}}>访问HDF5文件</Button>
+          </Col>
+        </Row>
+      </Card>
+      <Card variant="borderless"
+      style={{
+        marginTop: 24,
+      }}      
+      >
+        <Descriptions
+          title="视频流"
+          style={{
+            marginBottom: 32,
+          }}
+        >
+          <div id="video-container">
+              <div style={{width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
+                  <span style={{marginLeft:5,fontSize:15}}>等待视频流连接...</span>
+              </div>
+          </div>
+        </Descriptions>
+        <Descriptions
+          style={{
+            marginBottom: 32,
+          }}
+          column={4}
+        >
+          <Descriptions.Item label="操作按键："><Button  size="large">刷新视频</Button></Descriptions.Item>
+          <Descriptions.Item label="操作按键："><Button  size="large">检查状态</Button></Descriptions.Item>
+          <Descriptions.Item label="操作按键："><Button  size="large">全屏模式</Button></Descriptions.Item>
+          <Descriptions.Item label="操作按键："><Button  size="large">重置SLAM</Button></Descriptions.Item>
+        </Descriptions>
+        <Divider
+          style={{
+            marginBottom: 32,
+          }}
+        />
+        <Divider
+          style={{
+            marginBottom: 32,
+          }}
+        />
+        <div className={styles.title}>SLAM 数据</div>
+        <ProTable
+          style={{
+            marginBottom: 24,
+          }}
+          pagination={false}
+          search={false}
+          loading={loading}
+          options={false}
+          toolBarRender={false}
+          dataSource={xyzData}
+          columns={xyzColumns}
+          rowKey="id"
+        />
+        {/* <div className={styles.title}>姿态四元数</div> */}
+        <ProTable
+          style={{
+            marginBottom: 16,
+          }}
+          pagination={false}
+          loading={loading}
+          search={false}
+          options={false}
+          toolBarRender={false}
+          dataSource={qData}
+          columns={progressColumns}
+          rowKey="id"
+        />
+        
+      </Card>
+    {/* </div> */}
+    </PageContainer>
+  );
+};
+export default SlamDataMoniter;

@@ -10,7 +10,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl, useRequest } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+import { Button, Drawer, Input, message, Descriptions } from 'antd';
 import React, { useCallback, useRef, useState } from 'react';
 import { removeRule, rule } from '@/services/testapi/api';
 import CreateForm from './components/CreateForm';
@@ -46,12 +46,13 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.updateForm.ruleName.nameLabel"
-          defaultMessage="Rule name"
-        />
-      ),
+      // title: (
+      //   <FormattedMessage
+      //     id="pages.searchTable.updateForm.ruleName.nameLabel"
+      //     defaultMessage="Rule name"
+      //   />
+      // ),
+      title: '文件名称',
       dataIndex: 'name',
       hideInSearch: true,
       render: (dom, entity) => {
@@ -59,7 +60,7 @@ const TableList: React.FC = () => {
           <a
             onClick={() => {
               setCurrentRow(entity);
-              setShowDetail(true);
+              // setShowDetail(true);
             }}
           >
             {dom}
@@ -67,17 +68,17 @@ const TableList: React.FC = () => {
         );
       },
     },
-    {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.titleDesc"
-          defaultMessage="Description"
-        />
-      ),
-      dataIndex: 'desc',
-      valueType: 'textarea',
-      hideInSearch: true,
-    },
+    // {
+    //   title: (
+    //     <FormattedMessage
+    //       id="pages.searchTable.titleDesc"
+    //       defaultMessage="Description"
+    //     />
+    //   ),
+    //   dataIndex: 'desc',
+    //   valueType: 'textarea',
+    //   hideInSearch: true,
+    // },
     {
       title: (
         <FormattedMessage
@@ -86,12 +87,12 @@ const TableList: React.FC = () => {
         />
       ),
       dataIndex: 'callNo',
-      sorter: true,
+      // sorter: true,
       hideInSearch: true,
       renderText: (val: string) =>
         `${val}${intl.formatMessage({
           id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
+          defaultMessage: ' 次 ',
         })}`,
     },
     {
@@ -181,7 +182,7 @@ const TableList: React.FC = () => {
       ),
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: (_, entity) => [
         // <UpdateForm
         //   trigger={
         //     <a>
@@ -195,22 +196,199 @@ const TableList: React.FC = () => {
         //   onOk={actionRef.current?.reload}
         //   values={record}
         // />,
-        <a>
+        <a
+        onClick={() => {
+          setCurrentRow(entity);
+          setShowDetail(true);
+        }}
+        >
         <FormattedMessage
           id="pages.searchTable.config"
           defaultMessage="Configuration"
         />
         </a>,
-        <a key="subscribeAlert" href="#">
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="Subscribe to alerts"
-          />
-        </a>,
+        // <a key="subscribeAlert" href="#">
+        //   <FormattedMessage
+        //     id="pages.searchTable.subscribeAlert"
+        //     defaultMessage="Subscribe to alerts"
+        //   />
+        // </a>,
       ],
     },
   ];
 
+  const columns_drawer: ProColumns<API.RuleListItem>[] = [
+    {
+      // title: (
+      //   <FormattedMessage
+      //     id="pages.searchTable.updateForm.ruleName.nameLabel"
+      //     defaultMessage="Rule name"
+      //   />
+      // ),
+      title: '文件名称',
+      dataIndex: 'name',
+      hideInSearch: true,
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              setCurrentRow(entity);
+              // setShowDetail(true);
+            }}
+          >
+            {dom}
+          </a>
+        );
+      },
+    },
+    // {
+    //   title: (
+    //     <FormattedMessage
+    //       id="pages.searchTable.titleDesc"
+    //       defaultMessage="Description"
+    //     />
+    //   ),
+    //   dataIndex: 'desc',
+    //   valueType: 'textarea',
+    //   hideInSearch: true,
+    // },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.searchTable.titleCallNo"
+          defaultMessage="Number of service calls"
+        />
+      ),
+      dataIndex: 'callNo',
+      // sorter: true,
+      hideInSearch: true,
+      renderText: (val: string) =>
+        `${val}${intl.formatMessage({
+          id: 'pages.searchTable.tenThousand',
+          defaultMessage: ' 次 ',
+        })}`,
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.searchTable.titleStatus"
+          defaultMessage="Status"
+        />
+      ),
+      dataIndex: 'status',
+      hideInSearch: true,
+      valueEnum: {
+        0: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.nameStatus.default"
+              defaultMessage="Shut down"
+            />
+          ),
+          status: 'Default',
+        },
+        1: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.nameStatus.running"
+              defaultMessage="Running"
+            />
+          ),
+          status: 'Processing',
+        },
+        2: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.nameStatus.online"
+              defaultMessage="Online"
+            />
+          ),
+          status: 'Success',
+        },
+        3: {
+          text: (
+            <FormattedMessage
+              id="pages.searchTable.nameStatus.abnormal"
+              defaultMessage="Abnormal"
+            />
+          ),
+          status: 'Error',
+        },
+      },
+    },
+    {
+      title: (
+        <FormattedMessage
+          id="pages.searchTable.titleUpdatedAt"
+          defaultMessage="Last scheduled time"
+        />
+      ),
+      sorter: true,
+      hideInSearch: true,
+      dataIndex: 'updatedAt',
+      valueType: 'dateTime',
+      renderFormItem: (item, { defaultRender, ...rest }, form) => {
+        const status = form.getFieldValue('status');
+        if (`${status}` === '0') {
+          return false;
+        }
+        if (`${status}` === '3') {
+          return (
+            <Input
+              {...rest}
+              placeholder={intl.formatMessage({
+                id: 'pages.searchTable.exception',
+                defaultMessage: 'Please enter the reason for the exception!',
+              })}
+            />
+          );
+        }
+        return defaultRender(item);
+      },
+    },
+    // {
+    //   title: (
+    //     <FormattedMessage
+    //       id="pages.searchTable.titleOption"
+    //       defaultMessage="Operating"
+    //     />
+    //   ),
+    //   dataIndex: 'option',
+    //   valueType: 'option',
+    //   render: (_, entity) => [
+    //     // <UpdateForm
+    //     //   trigger={
+    //     //     <a>
+    //     //       <FormattedMessage
+    //     //         id="pages.searchTable.config"
+    //     //         defaultMessage="Configuration"
+    //     //       />
+    //     //     </a>
+    //     //   }
+    //     //   key="config"
+    //     //   onOk={actionRef.current?.reload}
+    //     //   values={record}
+    //     // />,
+    //     <a
+    //     onClick={() => {
+    //       setCurrentRow(entity);
+    //       setShowDetail(true);
+    //     }}
+    //     >
+    //     <FormattedMessage
+    //       id="pages.searchTable.config"
+    //       defaultMessage="Configuration"
+    //     />
+    //     </a>,
+    //     // <a key="subscribeAlert" href="#">
+    //     //   <FormattedMessage
+    //     //     id="pages.searchTable.subscribeAlert"
+    //     //     defaultMessage="Subscribe to alerts"
+    //     //   />
+    //     // </a>,
+    //   ],
+    // },
+  ];
   /**
    *  Delete node
    * @zh-CN 删除节点
@@ -310,15 +488,17 @@ const TableList: React.FC = () => {
       )}
 
       <Drawer
-        width={600}
+        width={1200}
         open={showDetail}
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);
         }}
         closable={false}
+        title="HDF5数据浏览"
       >
         {currentRow?.name && (
+          <>
           <ProDescriptions<API.RuleListItem>
             column={2}
             title={currentRow?.name}
@@ -328,8 +508,17 @@ const TableList: React.FC = () => {
             params={{
               id: currentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
+            columns={columns_drawer as ProDescriptionsItemProps<API.RuleListItem>[]}
           />
+          <Descriptions
+            >
+              <div id="video-container">
+                  <div style={{marginTop: 23 ,width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
+                      <span style={{marginLeft:5,fontSize:15}}>加载HDF5文件...</span>
+                  </div>
+              </div>
+          </Descriptions>
+        </>
         )}
       </Drawer>
     </PageContainer>

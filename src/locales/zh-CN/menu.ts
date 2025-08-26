@@ -22,7 +22,7 @@ export default {
   'menu.form.step-form.result': '分步表单（完成）',
   'menu.form.advanced-form': '高级表单',
   'menu.list': '列表页',
-  'menu.list.table-list': '采集列表',
+  'menu.list.table-list': 'HDF5 - 采集列表',
   'menu.list.basic-list': '标准列表',
   'menu.list.card-list': '数据可视化',
   'menu.list.search-list': '搜索列表',
@@ -49,5 +49,5 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
-  'menu.slam-data-moniter': 'SLAM数据监控'
+  'menu.slam-data-moniter': 'SLAM - 数据监控'
 };

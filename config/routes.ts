@@ -45,12 +45,6 @@ export default [
   //     },
   //   ],
   // },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './table-list',
-  },
   // {
   //   name: 'list.card-list',
   //   icon: 'profile',
@@ -62,6 +56,12 @@ export default [
     icon: 'robot',
     path: '/slam-data-moniter',
     component: './slam-data-moniter',
+  },
+  {
+    name: 'list.table-list',
+    icon: 'table',
+    path: '/list',
+    component: './table-list',
   },
   {
     path: '/',

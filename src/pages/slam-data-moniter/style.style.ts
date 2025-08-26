@@ -55,7 +55,24 @@ const useStyles = createStyles(({ token }) => {
           display: 'none',
         },
       },
-    }
+    },
+    linearGradientButton: {
+        '> span': {
+          position: 'relative',
+        },
+        '&::before': {
+          content: "''",
+          background: 'linear-gradient(135deg, #6253e1, #04befe)',
+          position: 'absolute',
+          inset: '-1px',
+          opacity: 1,
+          transition: 'all 0.3s',
+          borderRadius: 'inherit',
+        },
+        '&:hover::before': {
+          opacity: 0,
+        },
+    },
   };
 });
 
