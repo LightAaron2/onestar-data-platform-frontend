@@ -5,7 +5,7 @@
 `npm install`
 
 ### - 运行demo
-`npm run start` --  前端开发测试环境1111
+`npm run start` --  前端开发测试环境1111    123
 `npm run start:test-dev` -- 前后端连通测试环境
 `git commit -m "update func" --no-verify`
 
