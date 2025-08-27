@@ -58,7 +58,7 @@ export default {
   'pages.searchTable.titleUpdatedAt': '创建时间',
   'pages.searchTable.exception': '请输入异常原因！',
   'pages.searchTable.titleOption': '操作',
-  'pages.searchTable.config': '查看数据',
+  'pages.searchTable.config': '详情',
   'pages.searchTable.subscribeAlert': '上传',
   'pages.searchTable.title': 'HDF5数据',
   'pages.searchTable.new': '新建',

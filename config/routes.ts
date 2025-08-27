@@ -64,6 +64,12 @@ export default [
     component: './table-list',
   },
   {
+    name: 'slam-data-review',
+    icon: 'eye',
+    path: '/slam-data-review',
+    component: './slam-data-review',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

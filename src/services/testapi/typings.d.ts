@@ -98,4 +98,10 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type HDF5ListItem = {
+    index?: number;
+    name?: string;
+    date?: string;
+  };
 }

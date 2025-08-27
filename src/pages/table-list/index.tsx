@@ -11,7 +11,7 @@ import {
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl, useRequest } from '@umijs/max';
 import { Button, Drawer, Input, message, Descriptions } from 'antd';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { removeRule, rule } from '@/services/testapi/api';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -20,8 +20,9 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType | null>(null);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
+  const [currentRow, setCurrentRow] = useState<API.HDF5ListItem>();
   const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [hdf5Data, setHdf5Data] = useState<API.HDF5ListItem[]>([]);
 
   /**
    * @en-US International configuration
@@ -44,17 +45,17 @@ const TableList: React.FC = () => {
     },
   });
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns<API.HDF5ListItem>[] = [
     {
-      // title: (
-      //   <FormattedMessage
-      //     id="pages.searchTable.updateForm.ruleName.nameLabel"
-      //     defaultMessage="Rule name"
-      //   />
-      // ),
+      title: 'ID',
+      dataIndex: 'index',
+      hideInSearch:false,
+
+    },
+    {
       title: '文件名称',
       dataIndex: 'name',
-      hideInSearch: true,
+      hideInSearch:false,
       render: (dom, entity) => {
         return (
           <a
@@ -90,10 +91,7 @@ const TableList: React.FC = () => {
       // sorter: true,
       hideInSearch: true,
       renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 次 ',
-        })}`,
+        `${val}次`,
     },
     {
       title: (
@@ -103,26 +101,8 @@ const TableList: React.FC = () => {
         />
       ),
       dataIndex: 'status',
-      hideInSearch: true,
+      // hideInSearch: true,
       valueEnum: {
-        0: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
-              defaultMessage="Shut down"
-            />
-          ),
-          status: 'Default',
-        },
-        1: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.running"
-              defaultMessage="Running"
-            />
-          ),
-          status: 'Processing',
-        },
         2: {
           text: (
             <FormattedMessage
@@ -152,7 +132,7 @@ const TableList: React.FC = () => {
       ),
       sorter: true,
       hideInSearch: true,
-      dataIndex: 'updatedAt',
+      dataIndex: 'date',
       valueType: 'dateTime',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
@@ -204,20 +184,21 @@ const TableList: React.FC = () => {
         >
         <FormattedMessage
           id="pages.searchTable.config"
-          defaultMessage="Configuration"
+          defaultMessage="Config"
         />
         </a>,
-        // <a key="subscribeAlert" href="#">
-        //   <FormattedMessage
-        //     id="pages.searchTable.subscribeAlert"
-        //     defaultMessage="Subscribe to alerts"
-        //   />
-        // </a>,
+        <a key="viewdetail" href="/slam-data-moniter">
+          {/* <FormattedMessage
+            id="pages.searchTable.viewdetail"
+            defaultMessage="View detail"
+          /> */}
+          读取视频文件
+        </a>,
       ],
     },
   ];
 
-  const columns_drawer: ProColumns<API.RuleListItem>[] = [
+  const columns_drawer: ProColumns<API.HDF5ListItem>[] = [
     {
       // title: (
       //   <FormattedMessage
@@ -225,6 +206,23 @@ const TableList: React.FC = () => {
       //     defaultMessage="Rule name"
       //   />
       // ),
+      title: 'ID',
+      dataIndex: 'index',
+      hideInSearch: true,
+      // render: (dom, entity) => {
+      //   return (
+      //     <a
+      //       onClick={() => {
+      //         setCurrentRow(entity);
+      //         // setShowDetail(true);
+      //       }}
+      //     >
+      //       {dom}
+      //     </a>
+      //   );
+      // },
+    },
+    {
       title: '文件名称',
       dataIndex: 'name',
       hideInSearch: true,
@@ -241,17 +239,6 @@ const TableList: React.FC = () => {
         );
       },
     },
-    // {
-    //   title: (
-    //     <FormattedMessage
-    //       id="pages.searchTable.titleDesc"
-    //       defaultMessage="Description"
-    //     />
-    //   ),
-    //   dataIndex: 'desc',
-    //   valueType: 'textarea',
-    //   hideInSearch: true,
-    // },
     {
       title: (
         <FormattedMessage
@@ -325,7 +312,7 @@ const TableList: React.FC = () => {
       ),
       sorter: true,
       hideInSearch: true,
-      dataIndex: 'updatedAt',
+      dataIndex: 'date',
       valueType: 'dateTime',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
@@ -346,55 +333,8 @@ const TableList: React.FC = () => {
         return defaultRender(item);
       },
     },
-    // {
-    //   title: (
-    //     <FormattedMessage
-    //       id="pages.searchTable.titleOption"
-    //       defaultMessage="Operating"
-    //     />
-    //   ),
-    //   dataIndex: 'option',
-    //   valueType: 'option',
-    //   render: (_, entity) => [
-    //     // <UpdateForm
-    //     //   trigger={
-    //     //     <a>
-    //     //       <FormattedMessage
-    //     //         id="pages.searchTable.config"
-    //     //         defaultMessage="Configuration"
-    //     //       />
-    //     //     </a>
-    //     //   }
-    //     //   key="config"
-    //     //   onOk={actionRef.current?.reload}
-    //     //   values={record}
-    //     // />,
-    //     <a
-    //     onClick={() => {
-    //       setCurrentRow(entity);
-    //       setShowDetail(true);
-    //     }}
-    //     >
-    //     <FormattedMessage
-    //       id="pages.searchTable.config"
-    //       defaultMessage="Configuration"
-    //     />
-    //     </a>,
-    //     // <a key="subscribeAlert" href="#">
-    //     //   <FormattedMessage
-    //     //     id="pages.searchTable.subscribeAlert"
-    //     //     defaultMessage="Subscribe to alerts"
-    //     //   />
-    //     // </a>,
-    //   ],
-    // },
   ];
-  /**
-   *  Delete node
-   * @zh-CN 删除节点
-   *
-   * @param selectedRows
-   */
+
   const handleRemove = useCallback(
     async (selectedRows: API.RuleListItem[]) => {
       if (!selectedRows?.length) {
@@ -412,24 +352,53 @@ const TableList: React.FC = () => {
     [delRun, messageApi.warning],
   );
 
+  const { data: hdf5Datas, loading: xyzdataloding } = useRequest (async () => {
+    console.log('请求....HDF5')
+    return await rule();
+   
+  });
+  // useEffect(() => {
+  //   console.log(hdf5Datas)
+  //   if (hdf5Datas !== undefined) {
+  //     setHdf5Data(hdf5Datas)
+  //   } 
+  // }, [hdf5Datas])
+
+
+  useEffect(() => {
+    fetch(`${'http://localhost:8888'}/api/v0/files`)
+      .then(r => r.json())
+      .then((list) => {
+        list.forEach((element: { callNo: string; status: number; }) => {
+          element.callNo =  (Math.floor(Math.random() * 90) + 10).toString();// 示例：你可以根据逻辑生成具体的数值
+          element.status = 2;
+        });
+        setHdf5Data(list);
+      })
+      .catch(console.error);
+  }, []);
+
+
   return (
     <PageContainer>
       {contextHolder}
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.HDF5ListItem, API.PageParams>
         headerTitle={intl.formatMessage({
           id: 'pages.searchTable.title',
           defaultMessage: 'Enquiry form',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="index"
         search={{
           labelWidth: 120,
         }}
+        defaultSize="large"
         // toolBarRender={() => [
         //   <CreateForm key="create" reload={actionRef.current?.reload} />,
         // ]}
         request={rule}
         columns={columns}
+        dataSource={hdf5Data}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
@@ -461,7 +430,7 @@ const TableList: React.FC = () => {
                 )}{' '}
                 <FormattedMessage
                   id="pages.searchTable.tenThousand"
-                  defaultMessage="万"
+                  defaultMessage="次"
                 />
               </span>
             </div>
@@ -496,6 +465,7 @@ const TableList: React.FC = () => {
         }}
         closable={false}
         title="HDF5数据浏览"
+        placement="bottom"
       >
         {currentRow?.name && (
           <>
@@ -510,14 +480,14 @@ const TableList: React.FC = () => {
             }}
             columns={columns_drawer as ProDescriptionsItemProps<API.RuleListItem>[]}
           />
-          <Descriptions
+          {/* <Descriptions
             >
               <div id="video-container">
                   <div style={{marginTop: 23 ,width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
                       <span style={{marginLeft:5,fontSize:15}}>加载HDF5文件...</span>
                   </div>
               </div>
-          </Descriptions>
+          </Descriptions> */}
         </>
         )}
       </Drawer>

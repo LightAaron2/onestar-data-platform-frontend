@@ -19,12 +19,12 @@ const progressColumns: ProColumns<QData>[] = [
     align: 'left',
     hideInTable: true,
   },
-  {
-    title: '时间',
-    dataIndex: 'time',
-    key: 'time',
-    align: 'left'
-  },
+  // {
+  //   title: '时间',
+  //   dataIndex: 'time',
+  //   key: 'time',
+  //   align: 'left'
+  // },
   {
     title: '姿态四元数',
     dataIndex: 'name',
@@ -54,7 +54,7 @@ const Info: FC<{
   );
 };
 
-const SlamDataMoniter: FC = () => {
+const SlamDataReview: FC = () => {
   const [xyzData, setXyzData] = useState<XyzData[]>([])
   const [qData, setQData] = useState<QData[]>([])
 
@@ -274,14 +274,14 @@ const SlamDataMoniter: FC = () => {
       align: 'left',
       hideInTable: true,
     },
+    // {
+    //   title: '时间',
+    //   dataIndex: 'time',
+    //   key: 'time',
+    //   align: 'left'
+    // },
     {
-      title: '时间',
-      dataIndex: 'time',
-      key: 'time',
-      align: 'left'
-    },
-    {
-      title: '位置坐标名',
+      title: '位置坐标值',
       dataIndex: 'name',
       key: 'name',
       align: 'left'
@@ -371,76 +371,8 @@ const SlamDataMoniter: FC = () => {
 
   return (
     <PageContainer>
-      <Card>
-        <Row>
-          <Col sm={8} xs={24}>
-            <Info title="连接状态" value={connText} bordered /> 
-          </Col>
-          <Col sm={8} xs={24}>
-            <Info title="机器人编号" value="0001" bordered />
-          </Col>
-          <Col sm={8} xs={24}>
-            <Info title="当前时间" value={nowStr || '—'} />
-          </Col>
-        </Row>
-      </Card>
-
-      <Card style={{ marginTop: 24 }}>
-        <Row>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
-            { connect === false && (
-              <Button
-                type="primary"
-                icon={<ApiOutlined />}
-                className={styles.linearGradientButton}
-                size="large"
-                style={{width: 175}}
-                onClick={handleConnect}
-                disabled={recording}
-              >
-                连接设备
-              </Button>
-            )}
-            { connect === true && (
-              <Button
-                danger
-                type="primary"
-                icon={<CloseCircleOutlined />}
-                size="large"
-                style={{width: 175}}
-                onClick={handleConnect}
-                disabled={recording}
-              >
-                断开设备
-              </Button>
-            )}
-          </Col>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
-            <Button type="primary" size="large" style={{width: 150}}
-              onClick={handleStart} disabled={recording || !connect}   // CHG: 未连接时禁用
-            >开始采集</Button>
-          </Col>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
-            <Button size="large" danger style={{width: 150}}
-              onClick={handleStop} disabled={!recording}
-            >停止采集</Button>
-          </Col>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
-            <Button type="dashed" size="large" style={{width: 150}}
-              onClick={handleOpenH5} disabled={!lastFile}
-            >访问HDF5文件</Button>
-          </Col>
-        </Row>
-        <Row style={{marginTop: 12}}>
-          <Col span={18} style={{textAlign:'center'}}>
-            {recording ? <Badge status="processing" text="录制中…" /> : <Badge status="default" text="未录制" />}
-            {lastFile ? <div style={{marginTop:8}}>最近文件：{lastFile}</div> : null}
-          </Col>
-        </Row>
-      </Card>
-
       <Card variant="borderless" style={{ marginTop: 24 }}>
-        <Descriptions title="视频流" style={{ marginBottom: 32 }}>
+        <Descriptions title="录制视频: " style={{ marginBottom: 32 }}>
           <div id="video-container" style={{ display: "relative"}} >
             {/* 用 <img> 承载 MJPEG */}
             {connect && <img
@@ -449,27 +381,18 @@ const SlamDataMoniter: FC = () => {
               style={{ display: "relative", width: "100%", height: 600, objectFit: 'contain', backgroundColor: 'black'}}
             />}
             {!connect && (
-              // <div style={{ display: "absoulte", left: 0, top: 0, marginTop: 8, color: '#999'}}>未连接，点击上方“连接设备”开始视频流</div> 
               <div style={{width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
-                  <span style={{marginLeft:5,fontSize:15}}>未连接.... 点击上方 “连接设备” 开始视频流</span>
+                  <span style={{marginLeft:5,fontSize:15}}>读取资源中...</span>
               </div>
             )}
           </div>
         </Descriptions>
 
-        <Descriptions style={{ marginBottom: 32 }} column={4}>
-          <Descriptions.Item label="操作按键：">
-            <Button size="large" onClick={refreshVideo} disabled={!connect}>刷新视频</Button> {/* CHG */}
-          </Descriptions.Item>
-          <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>检查状态</Button></Descriptions.Item>
-          <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>全屏模式</Button></Descriptions.Item>
-          <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>重置SLAM</Button></Descriptions.Item>
-        </Descriptions>
 
         <Divider style={{ marginBottom: 32 }} />
         <Divider style={{ marginBottom: 32 }} />
 
-        <div className={styles.title}>SLAM 数据</div>
+        <div className={styles.title}>录制数据：</div>
         <ProTable
           style={{ marginBottom: 24 }}
           pagination={false}
@@ -496,4 +419,4 @@ const SlamDataMoniter: FC = () => {
     </PageContainer>
   );
 };
-export default SlamDataMoniter;
+export default SlamDataReview;
