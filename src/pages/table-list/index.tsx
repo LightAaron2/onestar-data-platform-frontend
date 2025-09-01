@@ -187,7 +187,7 @@ const TableList: React.FC = () => {
           defaultMessage="Config"
         />
         </a>,
-        <a key="viewdetail" href="/slam-data-moniter">
+        <a key="viewdetail" href="/slam-data-review">
           {/* <FormattedMessage
             id="pages.searchTable.viewdetail"
             defaultMessage="View detail"

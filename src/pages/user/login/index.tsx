@@ -178,7 +178,7 @@ const Login: React.FC = () => {
           {Settings.title && ` - ${Settings.title}`}
         </title>
       </Helmet>
-      {/* <Lang /> */}
+      <Lang /> 
       <div>
         <img style={{position: 'absolute', right: 0, bottom: 0, maxWidth : 1024}} src={avatarUrl}></img>
       </div>
