@@ -50,5 +50,6 @@ export default {
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
   'menu.slam-data-moniter': 'SLAM - 数据监控',
-  'menu.slam-data-review': 'HDF5 - 数据读取'
+  'menu.slam-data-review': 'HDF5 - 数据读取',
+  'menu.guides': '教学视频'
 };

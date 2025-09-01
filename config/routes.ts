@@ -52,6 +52,12 @@ export default [
   //   component: './data-card-list',
   // },
   {
+    name: 'guides',
+    icon: 'BulbOutlined',
+    path: '/slam-data-guide',
+    component: './guides',
+  },
+  {
     name: 'slam-data-moniter',
     icon: 'robot',
     path: '/slam-data-moniter',
