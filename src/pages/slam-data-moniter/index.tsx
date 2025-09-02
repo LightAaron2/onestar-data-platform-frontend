@@ -281,7 +281,7 @@ const SlamDataMoniter: FC = () => {
       align: 'left'
     },
     {
-      title: '位置坐标名',
+      title: '姿态四元数',
       dataIndex: 'name',
       key: 'name',
       align: 'left'
@@ -295,6 +295,35 @@ const SlamDataMoniter: FC = () => {
     },
   ];
 
+  const dataColumns: ProColumns<XyzData>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'left',
+      hideInTable: true,
+    },
+    {
+      title: '时间',
+      dataIndex: 'time',
+      key: 'time',
+      align: 'left'
+    },
+    {
+      title: '参数名',
+      dataIndex: 'name',
+      key: 'name',
+      align: 'left'
+    },
+    {
+      title: '参数值',
+      dataIndex: 'value',
+      key: 'value',
+      align: 'left' as 'left' | 'right' | 'center',
+      render: renderContent,
+    },
+  ];
+  
   // 连接状态展示
   const connText = useMemo(() => {
     if (!connect) return '未连接';          // CHG
@@ -370,8 +399,10 @@ const SlamDataMoniter: FC = () => {
   };
 
   return (
-    <PageContainer>
-      <Card>
+    <PageContainer
+    title="设备状态：正常"
+    >
+      {/* <Card>
         <Row>
           <Col sm={8} xs={24}>
             <Info title="连接状态" value={connText} bordered /> 
@@ -379,15 +410,19 @@ const SlamDataMoniter: FC = () => {
           <Col sm={8} xs={24}>
             <Info title="机器人编号" value="0001" bordered />
           </Col>
-          <Col sm={8} xs={24}>
-            <Info title="当前时间" value={nowStr || '—'} />
-          </Col>
+          
         </Row>
-      </Card>
+      </Card> */}
 
       <Card style={{ marginTop: 24 }}>
         <Row>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
+           <Col sm={3} xs={24}>
+            <Info title="连接状态" value={connText} bordered /> 
+          </Col>
+          <Col sm={3} xs={24}>
+            <Info title="机器人编号" value="0001" bordered />
+          </Col>
+          <Col sm={6} xs={24} style={{textAlign: 'center', alignSelf: 'center'}} >
             { connect === false && (
               <Button
                 type="primary"
@@ -415,62 +450,108 @@ const SlamDataMoniter: FC = () => {
               </Button>
             )}
           </Col>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
+          <Col sm={6} xs={24} style={{textAlign: 'center', alignSelf: 'center'}}>
             <Button type="primary" size="large" style={{width: 150}}
               onClick={handleStart} disabled={recording || !connect}   // CHG: 未连接时禁用
             >开始采集</Button>
           </Col>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
+          <Col sm={6} xs={24} style={{textAlign: 'center', alignSelf: 'center'}}>
             <Button size="large" danger style={{width: 150}}
               onClick={handleStop} disabled={!recording}
             >停止采集</Button>
           </Col>
-          <Col sm={6} xs={24} style={{textAlign: 'center'}}>
-            <Button type="dashed" size="large" style={{width: 150}}
-              onClick={handleOpenH5} disabled={!lastFile}
-            >访问HDF5文件</Button>
-          </Col>
         </Row>
-        <Row style={{marginTop: 12}}>
-          <Col span={18} style={{textAlign:'center'}}>
+        {/* <Row style={{marginTop: 12}}>
+          <Col sm={25}  style={{textAlign:'center'}}>
             {recording ? <Badge status="processing" text="录制中…" /> : <Badge status="default" text="未录制" />}
             {lastFile ? <div style={{marginTop:8}}>最近文件：{lastFile}</div> : null}
           </Col>
-        </Row>
+        </Row> */}
       </Card>
 
       <Card variant="borderless" style={{ marginTop: 24 }}>
         <Descriptions title="视频流" style={{ marginBottom: 32 }}>
-          <div id="video-container" style={{ display: "relative"}} >
-            {/* 用 <img> 承载 MJPEG */}
+          {/* <div id="video-container" style={{ display: "relative"}} >
             {connect && <img
               ref={mjpegRef}
               alt="video"
               style={{ display: "relative", width: "100%", height: 600, objectFit: 'contain', backgroundColor: 'black'}}
             />}
             {!connect && (
-              // <div style={{ display: "absoulte", left: 0, top: 0, marginTop: 8, color: '#999'}}>未连接，点击上方“连接设备”开始视频流</div> 
               <div style={{width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
                   <span style={{marginLeft:5,fontSize:15}}>未连接.... 点击上方 “连接设备” 开始视频流</span>
               </div>
             )}
-          </div>
+          </div> */}
+
+        <Card variant="borderless" style={{ marginTop: 24 }}>
+          <Descriptions title="左手" style={{ marginBottom: 32 }}>
+            <div id="video-container" style={{ display: "relative"}} >
+              {/* 用 <img> 承载 MJPEG */}
+              {connect && <img
+                ref={mjpegRef}
+                alt="video"
+                style={{ display: "relative", width: "100%", height: 600, objectFit: 'contain', backgroundColor: 'black'}}
+              />}
+              {!connect && (
+                // <div style={{ display: "absoulte", left: 0, top: 0, marginTop: 8, color: '#999'}}>未连接，点击上方“连接设备”开始视频流</div> 
+                <div style={{width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
+                    <span style={{marginLeft:5,fontSize:15}}>未连接.... 点击上方 “连接设备” 开始视频流</span>
+                </div>
+              )}
+            </div>
+          </Descriptions>
+        </Card>
+        <Card variant="borderless" style={{ marginTop: 24 }}>
+          <Descriptions title="头戴" style={{ marginBottom: 32 }}>
+            <div id="video-container" style={{ display: "relative"}} >
+              {/* 用 <img> 承载 MJPEG */}
+              {connect && <img
+                ref={mjpegRef}
+                alt="video"
+                style={{ display: "relative", width: "100%", height: 600, objectFit: 'contain', backgroundColor: 'black'}}
+              />}
+              {!connect && (
+                // <div style={{ display: "absoulte", left: 0, top: 0, marginTop: 8, color: '#999'}}>未连接，点击上方“连接设备”开始视频流</div> 
+                <div style={{width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
+                    <span style={{marginLeft:5,fontSize:15}}>未连接.... 点击上方 “连接设备” 开始视频流</span>
+                </div>
+              )}
+            </div>
+          </Descriptions>
+        </Card>
+        <Card variant="borderless" style={{ marginTop: 24 }}>
+          <Descriptions title="右手" style={{ marginBottom: 32 }}>
+            <div id="video-container" style={{ display: "relative"}} >
+              {/* 用 <img> 承载 MJPEG */}
+              {connect && <img
+                ref={mjpegRef}
+                alt="video"
+                style={{ display: "relative", width: "100%", height: 600, objectFit: 'contain', backgroundColor: 'black'}}
+              />}
+              {!connect && (
+                // <div style={{ display: "absoulte", left: 0, top: 0, marginTop: 8, color: '#999'}}>未连接，点击上方“连接设备”开始视频流</div> 
+                <div style={{width: "100%", height: 600, backgroundColor: 'black', color: 'white'}} id="video-placeholder">
+                    <span style={{marginLeft:5,fontSize:15}}>未连接.... 点击上方 “连接设备” 开始视频流</span>
+                </div>
+              )}
+            </div>
+          </Descriptions>
+        </Card>
         </Descriptions>
 
-        <Descriptions style={{ marginBottom: 32 }} column={4}>
+        {/* <Descriptions style={{ marginBottom: 32 }} column={4}>
           <Descriptions.Item label="操作按键：">
-            <Button size="large" onClick={refreshVideo} disabled={!connect}>刷新视频</Button> {/* CHG */}
+            <Button size="large" onClick={refreshVideo} disabled={!connect}>刷新视频</Button> 
           </Descriptions.Item>
           <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>检查状态</Button></Descriptions.Item>
           <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>全屏模式</Button></Descriptions.Item>
           <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>重置SLAM</Button></Descriptions.Item>
-        </Descriptions>
-
-        <Divider style={{ marginBottom: 32 }} />
+        </Descriptions> */}
         <Divider style={{ marginBottom: 32 }} />
 
         <div className={styles.title}>SLAM 数据</div>
-        <ProTable
+        {/* <ProTable
           style={{ marginBottom: 24 }}
           pagination={false}
           search={false}
@@ -490,6 +571,17 @@ const SlamDataMoniter: FC = () => {
           toolBarRender={false}
           dataSource={qData}
           columns={progressColumns}
+          rowKey="id"
+        /> */}
+        <ProTable
+          style={{ marginBottom: 24, width: '50%' }}
+          pagination={false}
+          search={false}
+          loading={loading}
+          options={false}
+          toolBarRender={false}
+          dataSource={xyzData}
+          columns={dataColumns}
           rowKey="id"
         />
       </Card>
