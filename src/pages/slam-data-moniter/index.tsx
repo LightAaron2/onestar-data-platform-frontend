@@ -516,10 +516,14 @@ const mjpegRef_head = useRef<HTMLImageElement | null>(null);
     window.open(url, '_blank');
   };
 
+  const title =  (
+    <div> 
+     {currentStep === 0 && <div>设备状态：停止 <Badge status="error"  /></div> }
+     {currentStep !== 0 && <div>设备状态：正常 <Badge status="success" /></div>}
+    </div>
+  )
   return (
-    <PageContainer
-      title="设备状态：正常"
-    >
+    <PageContainer title={title}>
       {/* <Card>
         <Row>
           <Col sm={8} xs={24}>
@@ -534,7 +538,7 @@ const mjpegRef_head = useRef<HTMLImageElement | null>(null);
 
       <Card style={{ marginTop: 24 }}>
         <Row>
-          <Col sm={6} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }} >
+          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }} >
             {connect === false && (
               <Button
                 type="primary"
@@ -562,37 +566,37 @@ const mjpegRef_head = useRef<HTMLImageElement | null>(null);
               </Button>
             )}
           </Col>
-          <Col sm={3} xs={24}>
-            <Info title="机器人编号" value="0001" bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="连接状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="激光传感器状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="视觉里程计状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="视频流状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="深度传感器状态" value={connText} bordered />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={3} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
+          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button type="primary" size="large" style={{ width: 150 }}
               onClick={handleStart} disabled={recording || !connect}   // CHG: 未连接时禁用
             >开始采集</Button>
           </Col>
-          <Col sm={3} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
+          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button size="large" danger style={{ width: 150 }}
               onClick={handleStop} disabled={!recording}
             >停止采集</Button>
           </Col>
-          <Col sm={20} xs={10} offset={2}>
+          <Col sm={2} xs={24}>
+            <Info title="机器人编号" value="0001" bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="连接状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="激光传感器状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="视觉里程计状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="视频流状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="深度传感器状态" value={connText} bordered />
+          </Col>
+        </Row>
+        <Row>
+        <Col sm={20} xs={10} offset={2} style={{ marginTop: 40 }}>
             {/* ADD: 三步进度条 */}
             <Steps current={currentStep} size="small">
               <Step title="A" description="未连接" />

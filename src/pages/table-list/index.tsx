@@ -177,17 +177,21 @@ const TableList: React.FC = () => {
         //   values={record}
         // />,
         <a
-        onClick={() => {
-          setCurrentRow(entity);
-          setShowDetail(true);
-        }}
+          onClick={() => {
+            setCurrentRow(entity);
+            setShowDetail(true);
+          }}
         >
         <FormattedMessage
           id="pages.searchTable.config"
           defaultMessage="Config"
         />
         </a>,
-        <a key="viewdetail" href="/slam-data-review">
+        <a key="viewdetail"
+          onClick={() => {
+            window.open('http://localhost:8000/slam-data-review', "popup","width=1440,height=1280")
+          }}
+        >
           {/* <FormattedMessage
             id="pages.searchTable.viewdetail"
             defaultMessage="View detail"

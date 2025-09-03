@@ -29,44 +29,57 @@ import { getFakeCaptcha } from '@/services/testapi/login';
 import { ping } from '@/services/testapi/login';
 import Settings from '../../../../config/defaultSettings';
 import avatarUrl from '@/../public/login_bg.png';
+import bgUrl from '@/../public/test_1.png';
 
-const useStyles = createStyles(({ token }) => {
-  return {
-    action: {
-      marginLeft: '8px',
-      color: 'rgba(0, 0, 0, 0.2)',
-      fontSize: '24px',
-      verticalAlign: 'middle',
-      cursor: 'pointer',
-      transition: 'color 0.3s',
-      '&:hover': {
-        color: token.colorPrimaryActive,
-      },
+const useStyles = createStyles(({ token }) => ({
+  action: {
+    marginLeft: '8px',
+    color: 'rgba(0, 0, 0, 0.2)',
+    fontSize: '24px',
+    verticalAlign: 'middle',
+    cursor: 'pointer',
+    transition: 'color 0.3s',
+    '&:hover': {
+      color: token.colorPrimaryActive,
     },
-    lang: {
-      width: 42,
-      height: 42,
-      lineHeight: '42px',
-      position: 'fixed',
-      right: 16,
-      borderRadius: token.borderRadius,
-      ':hover': {
-        backgroundColor: token.colorBgTextHover,
-      },
+  },
+  lang: {
+    width: 42,
+    height: 42,
+    lineHeight: '42px',
+    position: 'fixed',
+    right: 16,
+    borderRadius: token.borderRadius,
+    '&:hover': {
+      backgroundColor: token.colorBgTextHover,
     },
-    container: {
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-      overflow: 'auto',
-      backgroundImage:
-        // "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
-        "url('../public/test_1.png')",
-      backgroundSize: '75% 100%',
-    },
-  };
-});
+  },
+  container: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflow: 'auto',
+
+    // backgroundImage:
+    //   "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
+    //   // "url(/test_2.png)",
+
+    // 很淡的斜向蓝紫“刷痕”背景 + 底色
+    background:
+      'radial-gradient(120% 100% at 35% -10%,' +
+      ' rgba(64,147,255,.03) 0%,' +
+      ' rgba(64,147,255,.10) 20%,' +
+      ' rgba(122, 182, 255,.14) 55%,' +
+      ' rgba(255,255,255,0) 65%),' +
+      ' #ffffff',
+
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+}));
+
 
 const ActionIcons = () => {
   const { styles } = useStyles();
@@ -407,3 +420,7 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+function gradient(arg0: number, arg1: number, arg2: any, arg3: number, arg4: any, arg5: number, arg6: any, arg7: number, arg8: any, arg9: number) {
+  throw new Error('Function not implemented.');
+}
+
