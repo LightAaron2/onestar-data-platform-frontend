@@ -69,7 +69,7 @@ const Guide: React.FC = () => {
   );
 
   return (
-    <PageContainer content={content}>
+    <PageContainer content={content} title={"任务视教视频"}>
       {contextHolder}
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}> 
         <Col span={8}>
