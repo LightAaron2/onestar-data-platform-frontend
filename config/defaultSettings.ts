@@ -3,6 +3,26 @@ import type { ProLayoutProps } from '@ant-design/pro-components';
 /**
  * @name
  */
+const css = `
+  /* 放大公司logo */
+  .ant-pro-global-header-logo img {
+    height: 48px !important; /* 改大一些 */
+    vertical-align: middle;        /* 保证和文字垂直居中 */
+  }
+  /* 放大标题文字 */
+  .ant-pro-global-header-logo h1 {
+    font-size: 22px !important; /* 默认约16px */
+    font-weight: bold;          /* 加粗让它更显眼 */
+    display: inline-block;
+    vertical-align: middle;     /* 保证和图标垂直对齐 */
+  }
+}
+`;
+if (typeof document !== 'undefined') {
+  const styleTag = document.createElement('style');
+  styleTag.innerHTML = css;
+  document.head.appendChild(styleTag);
+}
 const Settings: ProLayoutProps & {
   pwa?: boolean;
   logo?: string;

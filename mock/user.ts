@@ -141,6 +141,15 @@ export default {
       access = 'user';
       return;
     }
+    if (password === '1' && username === 'z') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'user',
+      });
+      access = 'user';
+      return;
+    }
     if (password === '123123' && username === 'Admin') {
       res.send({
         status: 'ok',

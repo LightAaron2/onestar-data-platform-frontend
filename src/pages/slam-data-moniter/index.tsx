@@ -86,8 +86,8 @@ const SlamDataMoniter: FC = () => {
   // MJPEG <img> 引用
   const mjpegRef = useRef<HTMLImageElement | null>(null);
   const mjpegObjectUrlRef = useRef<string | null>(null); // ADD: 追踪 snapshot blob URL，断开时 revoke
-const mjpegRef_head = useRef<HTMLImageElement | null>(null);
-  // const tof_mjpegRef = useRef<HTMLImageElement | null>(null); 
+  const mjpegRef_head = useRef<HTMLImageElement | null>(null);
+  const tof_mjpegRef = useRef<HTMLImageElement | null>(null); 
 
   // ===== 录制状态与结果 =====
   const [recording, setRecording] = useState<boolean>(false);
@@ -463,9 +463,9 @@ const mjpegRef_head = useRef<HTMLImageElement | null>(null);
     if (mjpegRef.current && connect) {  // CHG: 仅连接时刷新
       mjpegRef.current.src = `${API_BASE}/test/api/v0/video/mjpeg?cb=${Date.now()}`;
     }
-    // if (tof_mjpegRef.current && connect) {  // CHG: 仅连接时刷新/api/v0/video/tof/mjpeg
-    //   tof_mjpegRef.current.src = `${API_BASE}/api/v0/video/tof/mjpeg`;
-    // }
+    if (tof_mjpegRef.current && connect) {  // CHG: 仅连接时刷新/api/v0/video/tof/mjpeg
+      tof_mjpegRef.current.src = `${API_BASE}/api/v0/video/tof/mjpeg`;
+    }
   };
 
   const handleConnect = () => {
@@ -657,7 +657,7 @@ const mjpegRef_head = useRef<HTMLImageElement | null>(null);
                     <img
                       ref={mjpegRef_head}
                       alt="video-1-bottom"
-                      // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
+                      src="http://localhost:8888/api/v0/video/tof/mjpeg"
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
                     />
                   ) : (
@@ -680,7 +680,7 @@ const mjpegRef_head = useRef<HTMLImageElement | null>(null);
                 <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
-                      ref={mjpegRef_head}
+                      // ref={mjpegRef}
                       alt="video-2-top"
                       // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}

@@ -86,8 +86,8 @@ const SlamDataMoniter: FC = () => {
   // MJPEG <img> 引用
   const mjpegRef = useRef<HTMLImageElement | null>(null);
   const mjpegObjectUrlRef = useRef<string | null>(null); // ADD: 追踪 snapshot blob URL，断开时 revoke
-
-  // const tof_mjpegRef = useRef<HTMLImageElement | null>(null); 
+  const mjpegRef_head = useRef<HTMLImageElement | null>(null);
+  const tof_mjpegRef = useRef<HTMLImageElement | null>(null); 
 
   // ===== 录制状态与结果 =====
   const [recording, setRecording] = useState<boolean>(false);
@@ -516,10 +516,14 @@ const SlamDataMoniter: FC = () => {
     window.open(url, '_blank');
   };
 
+  const title =  (
+    <div> 
+     {currentStep === 0 && <div>设备状态：停止 <Badge status="error"  /></div> }
+     {currentStep !== 0 && <div>设备状态：正常 <Badge status="success" /></div>}
+    </div>
+  )
   return (
-    <PageContainer
-      title="设备状态：正常"
-    >
+    <PageContainer title={title}>
       {/* <Card>
         <Row>
           <Col sm={8} xs={24}>
@@ -534,7 +538,7 @@ const SlamDataMoniter: FC = () => {
 
       <Card style={{ marginTop: 24 }}>
         <Row>
-          <Col sm={6} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }} >
+          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }} >
             {connect === false && (
               <Button
                 type="primary"
@@ -562,71 +566,37 @@ const SlamDataMoniter: FC = () => {
               </Button>
             )}
           </Col>
-          <Col sm={3} xs={24}>
-            <Info title="机器人编号" value="0001" bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="连接状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="激光传感器状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="视觉里程计状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="视频流状态" value={connText} bordered />
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="深度传感器状态" value={connText} bordered />
-          </Col>
-        </Row>
-        <Row>
-          {/* <Col sm={3} xs={24}>
-            <Info title="连接状态" value={connText} bordered /> 
-          </Col>
-          <Col sm={3} xs={24}>
-            <Info title="机器人编号" value="0001" bordered />
-          </Col>
-          <Col sm={6} xs={24} style={{textAlign: 'center', alignSelf: 'center'}} >
-            { connect === false && (
-              <Button
-                type="primary"
-                icon={<ApiOutlined />}
-                className={styles.linearGradientButton}
-                size="large"
-                style={{width: 175}}
-                onClick={handleConnect}
-                disabled={recording}
-              >
-                连接设备
-              </Button>
-            )}
-            { connect === true && (
-              <Button
-                danger
-                type="primary"
-                icon={<CloseCircleOutlined />}
-                size="large"
-                style={{width: 175}}
-                onClick={handleConnect}
-                disabled={recording}
-              >
-                断开设备
-              </Button>
-            )}
-          </Col> */}
-          <Col sm={3} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
+          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button type="primary" size="large" style={{ width: 150 }}
               onClick={handleStart} disabled={recording || !connect}   // CHG: 未连接时禁用
             >开始采集</Button>
           </Col>
-          <Col sm={3} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
+          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button size="large" danger style={{ width: 150 }}
               onClick={handleStop} disabled={!recording}
             >停止采集</Button>
           </Col>
-          <Col sm={20} xs={10} offset={2}>
+          <Col sm={2} xs={24}>
+            <Info title="机器人编号" value="0001" bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="连接状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="激光传感器状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="视觉里程计状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="视频流状态" value={connText} bordered />
+          </Col>
+          <Col sm={2} xs={24}>
+            <Info title="深度传感器状态" value={connText} bordered />
+          </Col>
+        </Row>
+        <Row>
+        <Col sm={20} xs={10} offset={2} style={{ marginTop: 40 }}>
             {/* ADD: 三步进度条 */}
             <Steps current={currentStep} size="small">
               <Step title="A" description="未连接" />
@@ -635,57 +605,63 @@ const SlamDataMoniter: FC = () => {
             </Steps>
           </Col>
         </Row>
-        {/* <Row style={{marginTop: 12}}>
-          <Col sm={25}  style={{textAlign:'center'}}>
-            {recording ? <Badge status="processing" text="录制中…" /> : <Badge status="default" text="未录制" />}
-            {lastFile ? <div style={{marginTop:8}}>最近文件：{lastFile}</div> : null}
-          </Col>
-        </Row> */}
       </Card>
 
-      <Card variant="borderless" style={{ marginTop: 24 }}>
+      {/* ======= 视频区域 ======= */}
+      <Card variant="borderless" style={{ marginTop: 8 }}> {/* CHG: 24 -> 8 缩小视频区块上方空白 */}
+        <Divider style={{ marginBottom: 8 }} />           {/* CHG: 32 -> 8 再次压缩上方留白 */}
 
-        // CHG: 原来的单列三卡片，改为三组 * 每组上下两个视频
-        <Card variant="borderless" style={{ marginTop: 24 }}>
-          <Descriptions title="视频流" style={{ marginBottom: 32 }} />
-
-          {/* === 三列容器：每列一组（上下两个视频） === */}  {/* ADD */}
+        {/* 容器 Card：去掉 body 内边距，避免额外空白 */}
+        <Card variant="borderless" style={{ marginTop: 0 }} bodyStyle={{ padding: 0 }}> {/* ADD bodyStyle:0 */}
+          {/* 三列网格：无列/行间距，视频块紧贴 */}
           <div
             style={{
-              display: 'grid',               // ADD
-              gridTemplateColumns: 'repeat(3, 1fr)', // 三列
-              columnGap: 4,                 // 组与组之间的间距
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',   // CHG: 去掉中间空列
+              columnGap: 0,                             // CHG: 列间距 0
+              rowGap: 0,                                // CHG: 行间距 0
+              alignItems: 'start',
             }}
           >
-            {/* ===== 组1 ===== */}          {/* ADD */}
-            <Card variant="borderless" style={{ marginTop: 24 }}>
-              <Descriptions title="组1 - 上" style={{ marginBottom: 12 }}>
-                <div style={{ position: 'relative' }}>
+            {/* ===== 组1（列1）===== */}
+            <Card variant="borderless" style={{ marginTop: 0 }} bodyStyle={{ padding: 0 }}>  {/* ADD bodyStyle:0 */}
+              <Descriptions
+                title="左手-RGB"
+                size="small"
+                style={{ marginBottom: 0 }}
+                styles={{ header: { marginBottom: 0 }, content: { margin: 0, padding: 0 } }}  // ADD
+              >
+                <div style={{ width: '100%', lineHeight: 0 }}>  {/* ADD: lineHeight:0 去掉行高缝隙 */}
                   {connect ? (
                     <img
-                      ref={mjpegRef} /* 只给第一路挂 ref，保证你现有 useEffect 能驱动 */  // ADD
+                      ref={mjpegRef}  
                       alt="video-1-top"
-                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black' }}
+                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}  /* CHG: display:block 彻底贴合 */
                     />
                   ) : (
-                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white' }}>
+                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white', lineHeight: '300px' }}>
                       <span style={{ marginLeft: 5, fontSize: 15 }}>未连接.... 点击上方 “连接设备” 开始视频流</span>
                     </div>
                   )}
                 </div>
               </Descriptions>
 
-              <Descriptions title="组1 - 下" style={{ marginBottom: 12 }}>  {/* ADD */}
-                <div style={{ width : '100%'}}>
+              <Descriptions
+                title="左手-TOF"
+                size="small"
+                style={{ marginBottom: 0 }}
+                styles={{ header: { marginBottom: 0 }, content: { margin: 0, padding: 0 } }}  // ADD
+              >
+                <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
+                      ref={mjpegRef_head}
                       alt="video-1-bottom"
-                      /* 不用 ref，直接走接口，多客户端可并发拉流 */
-                      src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}  // ADD
-                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black' }}
+                      // src="http://127.0.0.1:8888/api/v0/video/tof/mjpeg"
+                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
                     />
                   ) : (
-                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white' }}>
+                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white', lineHeight: '300px' }}>
                       <span style={{ marginLeft: 5, fontSize: 15 }}>未连接.... 点击上方 “连接设备” 开始视频流</span>
                     </div>
                   )}
@@ -693,34 +669,46 @@ const SlamDataMoniter: FC = () => {
               </Descriptions>
             </Card>
 
-            {/* ===== 组2 ===== */}          {/* ADD */}
-            <Card variant="borderless" style={{ marginTop: 24 }}>
-              <Descriptions title="组2 - 上" style={{ marginBottom: 12 }}>
-                <div style={{ position: 'relative' }}>
+            {/* ===== 组2（列2）===== */}
+            <Card variant="borderless" style={{ marginTop: 0 }} bodyStyle={{ padding: 0 }}>
+              <Descriptions
+                title="头戴-RGB"
+                size="small"
+                style={{ marginBottom: 0 }}
+                styles={{ header: { marginBottom: 0 }, content: { margin: 0, padding: 0 } }}
+              >
+                <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
+                      ref={mjpegRef_head}
                       alt="video-2-top"
-                      src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}   // ADD
-                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black' }}
+                      // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
+                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
                     />
                   ) : (
-                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white' }}>
+                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white', lineHeight: '300px' }}>
                       <span style={{ marginLeft: 5, fontSize: 15 }}>未连接.... 点击上方 “连接设备” 开始视频流</span>
                     </div>
                   )}
                 </div>
               </Descriptions>
 
-              <Descriptions title="组2 - 下" style={{ marginBottom: 12 }}>
-                <div style={{ position: 'relative' }}>
+              <Descriptions
+                title="头戴-TOF"
+                size="small"
+                style={{ marginBottom: 0 }}
+                styles={{ header: { marginBottom: 0 }, content: { margin: 0, padding: 0 } }}
+              >
+                <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
+                      ref={mjpegRef_head}
                       alt="video-2-bottom"
-                      src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}   // ADD
-                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black' }}
+                      // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
+                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
                     />
                   ) : (
-                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white' }}>
+                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white', lineHeight: '300px' }}>
                       <span style={{ marginLeft: 5, fontSize: 15 }}>未连接.... 点击上方 “连接设备” 开始视频流</span>
                     </div>
                   )}
@@ -728,34 +716,45 @@ const SlamDataMoniter: FC = () => {
               </Descriptions>
             </Card>
 
-            {/* ===== 组3 ===== */}          {/* ADD */}
-            <Card variant="borderless" style={{ marginTop: 24 }}>
-              <Descriptions title="组3 - 上" style={{ marginBottom: 12 }}>
-                <div style={{ position: 'relative' }}>
+            {/* ===== 组3（列3）===== */}
+            <Card variant="borderless" style={{ marginTop: 0 }} bodyStyle={{ padding: 0 }}>
+              <Descriptions
+                title="右手-RGB"
+                size="small"
+                style={{ marginBottom: 0 }}
+                styles={{ header: { marginBottom: 0 }, content: { margin: 0, padding: 0 } }}
+              >
+                <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
+                      ref={mjpegRef_head}
                       alt="video-3-top"
-                      src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}   // ADD
-                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black' }}
+                      // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
+                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
                     />
                   ) : (
-                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white' }}>
+                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white', lineHeight: '300px' }}>
                       <span style={{ marginLeft: 5, fontSize: 15 }}>未连接.... 点击上方 “连接设备” 开始视频流</span>
                     </div>
                   )}
                 </div>
               </Descriptions>
 
-              <Descriptions title="组3 - 下" style={{ marginBottom: 12 }}>
-                <div style={{ position: 'relative' }}>
+              <Descriptions
+                title="右手-TOF"
+                size="small"
+                style={{ marginBottom: 0 }}
+                styles={{ header: { marginBottom: 0 }, content: { margin: 0, padding: 0 } }}
+              >
+                <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
                       alt="video-3-bottom"
-                      src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}   // ADD
-                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black' }}
+                      // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
+                      style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
                     />
                   ) : (
-                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white' }}>
+                    <div style={{ width: '100%', height: 300, backgroundColor: 'black', color: 'white', lineHeight: '300px' }}>
                       <span style={{ marginLeft: 5, fontSize: 15 }}>未连接.... 点击上方 “连接设备” 开始视频流</span>
                     </div>
                   )}
@@ -765,51 +764,7 @@ const SlamDataMoniter: FC = () => {
           </div>
         </Card>
 
-
-        {/* <Descriptions style={{ marginBottom: 32 }} column={4}>
-          <Descriptions.Item label="操作按键：">
-            <Button size="large" onClick={refreshVideo} disabled={!connect}>刷新视频</Button> 
-          </Descriptions.Item>
-          <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>检查状态</Button></Descriptions.Item>
-          <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>全屏模式</Button></Descriptions.Item>
-          <Descriptions.Item label="操作按键："><Button size="large" disabled={!connect}>重置SLAM</Button></Descriptions.Item>
-        </Descriptions> */}
-        <Divider style={{ marginBottom: 32 }} />
-
         <div className={styles.title}>SLAM 数据</div>
-        {/* <ProTable
-          style={{ marginBottom: 24 }}
-          pagination={false}
-          search={false}
-          loading={loading}
-          options={false}
-          toolBarRender={false}
-          dataSource={xyzData}
-          columns={xyzColumns}
-          rowKey="id"
-        />
-        <ProTable
-          style={{ marginBottom: 16 }}
-          pagination={false}
-          loading={loading}
-          search={false}
-          options={false}
-          toolBarRender={false}
-          dataSource={qData}
-          columns={progressColumns}
-          rowKey="id"
-        /> 
-        <ProTable
-          style={{ marginBottom: 24, width: '50%' }}
-          pagination={false}
-          search={false}
-          loading={loading}
-          options={false}
-          toolBarRender={false}
-          dataSource={xyzData}
-          columns={dataColumns}
-          rowKey="id"
-        /> */}
         <ProTable
           style={{ marginBottom: 24, width: '50%' }}
           pagination={false}

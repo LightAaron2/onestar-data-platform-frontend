@@ -9,6 +9,10 @@
 `npm run start:dev-test` -- 前后端连通测试环境
 `git commit -m "update func" --no-verify`
 
+conda activate Test
+cd data-open-platform-backend
+python3 -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8888
+
 ### - 界面效果
 <img width="2070" height="1188" alt="Screen Shot 2025-07-27 at 5 45 05 PM" src="https://github.com/user-attachments/assets/ce9eca2d-c251-45ec-b092-5f3df176e80c" />
 
