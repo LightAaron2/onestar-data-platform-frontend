@@ -3,7 +3,7 @@
 import type { ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
-import { Badge, Card, Descriptions, Divider, Row, Col, Button, message, Steps } from 'antd';
+import { Badge, Card, Descriptions, Divider, Row, Col, Button, message, Steps, Select } from 'antd';
 import type { FC } from 'react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { XyzData, QData } from './data';
@@ -84,16 +84,24 @@ const SlamDataMoniter: FC = () => {
   const [connect, setConnect] = useState<boolean>(false);
 
   // MJPEG <img> 引用
-  const mjpegRef = useRef<HTMLImageElement | null>(null);
+  const mjpegRef = useRef<HTMLImageElement | null>(null);  //左手-RGB
   const mjpegObjectUrlRef = useRef<string | null>(null); // ADD: 追踪 snapshot blob URL，断开时 revoke
   const mjpegRef_head = useRef<HTMLImageElement | null>(null);
-  const tof_mjpegRef = useRef<HTMLImageElement | null>(null); 
+  const tof_mjpegRef = useRef<HTMLImageElement | null>(null); //左手-TOF
+
+  // LIANJIE_CHG: 独立引用，避免多个 <img> 复用同一个 ref 导致刷新异常
+  const headRgbRef = useRef<HTMLImageElement | null>(null);             // 头戴-RGB
+  const headTofRef = useRef<HTMLImageElement | null>(null);             // 头戴-TOF
+  const rightRgbRef = useRef<HTMLImageElement | null>(null);            // 右手-RGB
+  const rightTofRef = useRef<HTMLImageElement | null>(null);            // 右手-TOF
 
   // ===== 录制状态与结果 =====
   const [recording, setRecording] = useState<boolean>(false);
   const [lastFile, setLastFile] = useState<string>('');
 
   const { styles } = useStyles();
+
+  const {Option} = Select;
 
   // 仍保留基础信息请求
   const { data, loading } = useRequest(() => {
@@ -147,6 +155,10 @@ const SlamDataMoniter: FC = () => {
     if (img) {
       img.onerror = null;               // 防止断开时触发错误逻辑
       img.src = '';                     // 断开流
+    }
+    if (tof_mjpegRef.current) {         // 一并清理 TOF 左手
+      tof_mjpegRef.current.onerror = null;
+      tof_mjpegRef.current.src = '';
     }
     if (mjpegObjectUrlRef.current) {
       try { URL.revokeObjectURL(mjpegObjectUrlRef.current); } catch { }
@@ -522,6 +534,55 @@ const SlamDataMoniter: FC = () => {
      {currentStep !== 0 && <div>设备状态：正常 <Badge status="success" /></div>}
     </div>
   )
+  useEffect(()=>{
+    const isTypingTarget = (el: EventTarget | null) => {
+      if (!(el instanceof HTMLElement)) return false;
+      const tag = el.tagName.toLowerCase();
+      return (
+        tag === 'input' ||
+        tag === 'textarea' ||
+        el.isContentEditable
+      );
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      // KEYBIND_GUARD: 忽略长按重复与输入场景
+      if (e.repeat) return;
+      if (isTypingTarget(e.target)) return;
+
+      // 统一大小写
+      const key = e.key.toLowerCase();
+
+      // 空格：第一次=连接；第二次=断开（采集中禁止断开，保持与按钮一致）
+      if (key === ' ' || key === 'spacebar') {
+        e.preventDefault(); // 避免页面滚动
+        if (!connect) {
+          handleConnect(); // 连接
+        } else if (connect && !recording) {
+          handleConnect(); // 断开（只有未录制时允许）
+        } else {
+          // 录制中按空格不做事，保持与按钮禁用一致
+        }
+      }
+
+      // Y 键：第一次=开始采集；第二次=停止采集（需已连接）
+      if (key === 'y') {
+        if (connect && !recording) {
+          void handleStart();
+        } else if (recording) {
+          void handleStop();
+        } else {
+          // 未连接时按 y 不做事，与按钮禁用一致
+        }
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [connect, recording]); // KEYBIND_DEP: 跟随状态更新
+
+  const [robotId, setRobotId] = useState<string>('0001');
+  
   return (
     <PageContainer title={title}>
       {/* <Card>
@@ -568,7 +629,7 @@ const SlamDataMoniter: FC = () => {
           </Col>
           <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button type="primary" size="large" style={{ width: 150 }}
-              onClick={handleStart} disabled={recording || !connect}   // CHG: 未连接时禁用
+              onClick={handleStart} disabled={recording || !connect}   // 未连接时禁用
             >开始采集</Button>
           </Col>
           <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
@@ -577,8 +638,25 @@ const SlamDataMoniter: FC = () => {
             >停止采集</Button>
           </Col>
           <Col sm={2} xs={24}>
-            <Info title="机器人编号" value="0001" bordered />
-          </Col>
+      <div style={{ border: '1px solid #f0f0f0', padding: 8, borderRadius: 4 }}>
+        <div style={{ marginBottom: 4, fontWeight: 500 }}>机器人编号</div>
+        <Select
+          value={robotId}
+          style={{ width: '100%' }}
+          placeholder="选择或输入机器人编号"
+          showSearch
+          bordered={false} 
+          allowClear
+          onChange={(val) => setRobotId(val)}
+          onSearch={(val) => setRobotId(val)} // 手动输入时更新
+        >
+          <Option value="0001">0001</Option>
+          <Option value="0002">0002</Option>
+          <Option value="0003">0003</Option>
+          <Option value="0004">0004</Option>
+        </Select>
+      </div>
+    </Col>
           <Col sm={2} xs={24}>
             <Info title="连接状态" value={connText} bordered />
           </Col>
@@ -655,7 +733,7 @@ const SlamDataMoniter: FC = () => {
                 <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
-                      ref={mjpegRef_head}
+                      ref={tof_mjpegRef}
                       alt="video-1-bottom"
                       src="http://localhost:8888/api/v0/video/tof/mjpeg"
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
@@ -680,7 +758,7 @@ const SlamDataMoniter: FC = () => {
                 <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
-                      // ref={mjpegRef}
+                      ref={headRgbRef}
                       alt="video-2-top"
                       // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
@@ -702,7 +780,7 @@ const SlamDataMoniter: FC = () => {
                 <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
-                      ref={mjpegRef_head}
+                      ref={headTofRef}
                       alt="video-2-bottom"
                       // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
@@ -727,7 +805,7 @@ const SlamDataMoniter: FC = () => {
                 <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
-                      ref={mjpegRef_head}
+                      ref={rightRgbRef}
                       alt="video-3-top"
                       // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
@@ -749,6 +827,7 @@ const SlamDataMoniter: FC = () => {
                 <div style={{ width: '100%', lineHeight: 0 }}>
                   {connect ? (
                     <img
+                      ref={rightTofRef}
                       alt="video-3-bottom"
                       // src={`${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`}
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}
