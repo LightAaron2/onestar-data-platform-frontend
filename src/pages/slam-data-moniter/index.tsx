@@ -305,11 +305,12 @@ const SlamDataMoniter: FC = () => {
     // 启动 MJPEG
     img.src = `${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`;
 
+
     // 清理（断开或卸载）
     return () => {
       cleanupMjpeg();
     };
-  }, [connect, recording]); // CHG: 依赖 connect
+  }, [connect]); // CHG: 依赖 connect
 
   const { basicGoods, basicProgress } = data || {
     basicGoods: [],
