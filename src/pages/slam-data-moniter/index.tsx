@@ -101,7 +101,7 @@ const SlamDataMoniter: FC = () => {
 
   const { styles } = useStyles();
 
-  const {Option} = Select;
+  const { Option } = Select;
 
   // 仍保留基础信息请求
   const { data, loading } = useRequest(() => {
@@ -519,6 +519,13 @@ const SlamDataMoniter: FC = () => {
     }
   };
 
+  const handleAbnormalStop = () => {
+      console.log("Abnormal Stop button clicked");
+      // 在这里实现异常停止的具体逻辑
+      // 例如，调用一个特定的API端点
+      message.error("执行异常停止！");
+    };
+
   // === 访问最近保存的 HDF5 ===
   const handleOpenH5 = () => {
     if (!lastFile) {
@@ -529,13 +536,13 @@ const SlamDataMoniter: FC = () => {
     window.open(url, '_blank');
   };
 
-  const title =  (
-    <div> 
-     {currentStep === 0 && <div>设备状态：停止 <Badge status="error"  /></div> }
-     {currentStep !== 0 && <div>设备状态：正常 <Badge status="success" /></div>}
+  const title = (
+    <div>
+      {currentStep === 0 && <div>设备状态：停止 <Badge status="error" /></div>}
+      {currentStep !== 0 && <div>设备状态：正常 <Badge status="success" /></div>}
     </div>
   )
-  useEffect(()=>{
+  useEffect(() => {
     const isTypingTarget = (el: EventTarget | null) => {
       if (!(el instanceof HTMLElement)) return false;
       const tag = el.tagName.toLowerCase();
@@ -583,7 +590,7 @@ const SlamDataMoniter: FC = () => {
   }, [connect, recording]); // KEYBIND_DEP: 跟随状态更新
 
   const [robotId, setRobotId] = useState<string>('0001');
-  
+
   return (
     <PageContainer title={title}>
       {/* <Card>
@@ -600,7 +607,7 @@ const SlamDataMoniter: FC = () => {
 
       <Card style={{ marginTop: 24 }}>
         <Row>
-          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }} >
+          <Col sm={2} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }} >
             {connect === false && (
               <Button
                 type="primary"
@@ -628,36 +635,41 @@ const SlamDataMoniter: FC = () => {
               </Button>
             )}
           </Col>
-          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
+          <Col sm={2} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button type="primary" size="large" style={{ width: 150 }}
               onClick={handleStart} disabled={recording || !connect}   // 未连接时禁用
             >开始采集</Button>
           </Col>
-          <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
+          <Col sm={2} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button size="large" danger style={{ width: 150 }}
               onClick={handleStop} disabled={!recording}
             >停止采集</Button>
           </Col>
+          <Col sm={2} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
+            <Button size="large" danger style={{ width: 150 }}
+              onClick={handleAbnormalStop}
+            >异常停止</Button>
+          </Col>
           <Col sm={2} xs={24}>
-      <div style={{ border: '1px solid #f0f0f0', padding: 8, borderRadius: 4 }}>
-        <div style={{ marginBottom: 4, fontWeight: 500 }}>机器人编号</div>
-        <Select
-          value={robotId}
-          style={{ width: '100%' }}
-          placeholder="选择或输入机器人编号"
-          showSearch
-          bordered={false} 
-          allowClear
-          onChange={(val) => setRobotId(val)}
-          onSearch={(val) => setRobotId(val)} // 手动输入时更新
-        >
-          <Option value="0001">0001</Option>
-          <Option value="0002">0002</Option>
-          <Option value="0003">0003</Option>
-          <Option value="0004">0004</Option>
-        </Select>
-      </div>
-    </Col>
+            <div style={{ border: '1px solid #f0f0f0', padding: 8, borderRadius: 4 }}>
+              <div style={{ marginBottom: 4, fontWeight: 500 }}>机器人编号</div>
+              <Select
+                value={robotId}
+                style={{ width: '100%' }}
+                placeholder="选择或输入机器人编号"
+                showSearch
+                bordered={false}
+                allowClear
+                onChange={(val) => setRobotId(val)}
+                onSearch={(val) => setRobotId(val)} // 手动输入时更新
+              >
+                <Option value="0001">0001</Option>
+                <Option value="0002">0002</Option>
+                <Option value="0003">0003</Option>
+                <Option value="0004">0004</Option>
+              </Select>
+            </div>
+          </Col>
           <Col sm={2} xs={24}>
             <Info title="连接状态" value={connText} bordered />
           </Col>
@@ -675,7 +687,7 @@ const SlamDataMoniter: FC = () => {
           </Col>
         </Row>
         <Row>
-        <Col sm={20} xs={10} offset={2} style={{ marginTop: 40 }}>
+          <Col sm={20} xs={10} offset={2} style={{ marginTop: 40 }}>
             {/* ADD: 三步进度条 */}
             <Steps current={currentStep} size="small">
               <Step title="A" description="未连接" />
@@ -713,7 +725,7 @@ const SlamDataMoniter: FC = () => {
                 <div style={{ width: '100%', lineHeight: 0 }}>  {/* ADD: lineHeight:0 去掉行高缝隙 */}
                   {connect ? (
                     <img
-                      ref={mjpegRef}  
+                      ref={mjpegRef}
                       alt="video-1-top"
                       style={{ width: '100%', height: 300, objectFit: 'contain', backgroundColor: 'black', display: 'block' }}  /* CHG: display:block 彻底贴合 */
                     />

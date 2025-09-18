@@ -305,11 +305,12 @@ const SlamDataMoniter: FC = () => {
     // 启动 MJPEG
     img.src = `${API_BASE}/api/v0/video/mjpeg?cb=${Date.now()}`;
 
+
     // 清理（断开或卸载）
     return () => {
       cleanupMjpeg();
     };
-  }, [connect, recording]); // CHG: 依赖 connect
+  }, [connect]); // CHG: 依赖 connect
 
   const { basicGoods, basicProgress } = data || {
     basicGoods: [],
@@ -629,7 +630,7 @@ const SlamDataMoniter: FC = () => {
           </Col>
           <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
             <Button type="primary" size="large" style={{ width: 150 }}
-              onClick={handleStart} disabled={recording || !connect}   // CHG: 未连接时禁用
+              onClick={handleStart} disabled={recording || !connect}   // 未连接时禁用
             >开始采集</Button>
           </Col>
           <Col sm={4} xs={24} style={{ textAlign: 'center', alignSelf: 'center' }}>
